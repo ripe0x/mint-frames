@@ -14,7 +14,7 @@ import { writeContract, createConfig, getAccount, injected } from "@wagmi/core";
 import { baseSepolia, mainnet } from "viem/chains";
 import { BASE_PROVIDER } from "@/constants";
 import { publicClient } from "@/lib/viemClient";
-import { getMintDetails } from "@/lib/get721MintDetails";
+import { get721MintDetails } from "@/lib/get721MintDetails";
 
 export const POST = frames(async (ctx) => {
   // Do something with the request data to generate transaction data
@@ -26,7 +26,7 @@ export const POST = frames(async (ctx) => {
     args: [BigInt(mintQuantity)],
   });
 
-  const { price, zoraFee } = await getMintDetails(contractAddress);
+  const { price, zoraFee } = await get721MintDetails(contractAddress);
 
   // Return transaction data that conforms to the correct type
   return transaction({

@@ -20,10 +20,6 @@ export const POST = frames(async (ctx) => {
   const userAddress = ctx.message?.connectedAddress as `0x${string}`;
   const contractAddress = "0x7524e5644abf4eb3eabc43e548bfe9243c7f3b78";
   const mintQuantity = BigInt(1);
-  // const publicClient = createPublicClient({
-  //   chain: baseSepolia,
-  //   transport: http(BASE_PROVIDER),
-  // });
 
   const calldata = encodeFunctionData({
     abi: zoraERC721DropAbi,

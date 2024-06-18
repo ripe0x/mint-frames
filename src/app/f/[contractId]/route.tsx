@@ -5,8 +5,6 @@ import { zoraERC721DropAbi } from "@/abi/zoraERC721DropAbi";
 import { publicClient } from "@/lib/viemClient";
 import { formatEther } from "viem";
 import { parseURI } from "@/lib/utilities";
-import { Image } from "canvas";
-import { getImageDimensions } from "@/lib/getImageDimensions";
 import styles from "./FrameImage.module.css"; // Import CSS module
 import { use } from "react";
 import { useSearchParams } from "next/navigation";
@@ -37,13 +35,6 @@ const handleRequest = frames(async (ctx) => {
   const mint11ButtonText = `Mint 11 for ${formatEther(
     BigInt(11) * (price + zoraFee)
   )} ETH`;
-
-  console.log("mintCosts", mintCosts);
-  console.log("totalPurchaseCostCurrency", mintCosts.totalPurchaseCostCurrency);
-  let isERC20Mint = false;
-  if (mintCosts.totalPurchaseCostCurrency) {
-    isERC20Mint = true;
-  }
 
   return {
     image: image,
