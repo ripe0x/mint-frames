@@ -9,18 +9,27 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@wagmi/core": "^2.11.2",
+    "@zoralabs/protocol-sdk": "^0.6.0",
+    "alchemy-sdk": "^3.3.1",
+    "canvas": "^2.11.2",
+    "frames.js": "^0.17.0",
+    "image-size": "^1.1.1",
+    "next": "14.2.4",
+    "node-fetch": "^3.3.2",
+    "promisify": "^0.0.3",
     "react": "^18",
     "react-dom": "^18",
-    "next": "14.2.4"
+    "viem": "^2.14.2"
   },
   "devDependencies": {
-    "typescript": "^5",
     "@types/node": "^20",
     "@types/react": "^18",
     "@types/react-dom": "^18",
+    "eslint": "^8",
+    "eslint-config-next": "14.2.4",
     "postcss": "^8",
     "tailwindcss": "^3.4.1",
-    "eslint": "^8",
-    "eslint-config-next": "14.2.4"
+    "typescript": "^5"
   }
 }
