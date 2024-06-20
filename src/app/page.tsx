@@ -7,8 +7,8 @@ export async function generateMetadata() {
     other: await fetchMetadata(
       new URL(
         "/frames",
-        process.env.VERCEL_URL
-          ? `https://${process.env.VERCEL_URL}`
+        process.env.NEXT_PUBLIC_NETLIFY_URL
+          ? `https://${process.env.NEXT_PUBLIC_NETLIFY_URL}`
           : "http://localhost:3000"
       )
     ),

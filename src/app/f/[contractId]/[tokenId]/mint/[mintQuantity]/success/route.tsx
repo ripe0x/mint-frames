@@ -31,12 +31,13 @@ const handleRequest = frames(async (ctx) => {
     "ipfs://",
     "https://drops.infura-ipfs.io/ipfs/"
   );
-  const creatorFarcasterHandle = await getFarcasterUsernameFromAddress(
-    await getContractOwner(contractAddress)
-  );
+  // const creatorFarcasterHandle = await getFarcasterUsernameFromAddress(
+  //   await getContractOwner(contractAddress)
+  // );
+  const creatorFarcasterHandle = false; // temp remove due to error with neynar node version requirement
   const castText = `Mint ${metadataJson.name} ${
     creatorFarcasterHandle &&
-    `by ${creatorFarcasterHandle} with the drops.wtf frame \n \n ${frameUrl(
+    `by @${creatorFarcasterHandle} with the drops.wtf frame \n \n ${frameUrl(
       ctx.url.origin,
       contractAddress,
       tokenId
