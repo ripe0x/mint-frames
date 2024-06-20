@@ -1,11 +1,9 @@
 /* eslint-disable react/jsx-key */
 import { Button } from "frames.js/next";
 import { frames } from "../frames";
-import { zoraERC721DropAbi } from "@/abi/zoraERC721DropAbi";
 import { zoraERC1155Abi } from "@/abi/zoraERC1155Abi";
 import { publicClient } from "@/lib/viemClient";
 import { formatEther } from "viem";
-import { parseURI } from "@/lib/utilities";
 import { get1155MintDetails } from "@/lib/get1155MintDetails";
 import { collectorClient } from "@/lib/zoraClient";
 
@@ -21,21 +19,18 @@ const handleRequest = frames(async (ctx) => {
     functionName: "uri",
     args: [BigInt(tokenId)],
   });
-  // console.log("tokenURI", tokenURI);
-  // const tokenMetadata = parseURI(tokenURI);
-  // console.log("tokenMetadata", tokenMetadata);
-  const tokenUriUrl = tokenURI.replace("ipfs://", "https://ipfs.io/ipfs/");
+
+  const tokenUriUrl = tokenURI.replace(
+    "ipfs://",
+    "https://drops.infura-ipfs.io/ipfs/"
+  );
   // fetch token metadata
   const metadata = await fetch(tokenUriUrl);
-  console.log("metadata", metadata);
   const metadataJson = await metadata.json();
-  console.log("metadataJson", metadataJson);
-  // const image = metadataJson.image.replace("ipfs://", "https://ipfs.io/ipfs/");
   const image = metadataJson.image.replace(
     "ipfs://",
     "https://drops.infura-ipfs.io/ipfs/"
   );
-  console.log("image", image);
   const mint1ButtonText = `Mint 1 for ${formatEther(
     BigInt(1) * (price + zoraFee)
   )} ETH`;
@@ -52,24 +47,31 @@ const handleRequest = frames(async (ctx) => {
     quantityMinted: 1,
     mintType: "1155",
   });
-  console.log("mintCosts", mintCosts);
 
   if (mintCosts.totalPurchaseCostCurrency) {
     isERC20Mint = true;
   }
-
-  console.log("isERC20Mint", isERC20Mint);
+  // console.log("isERC20Mint", isERC20Mint);
 
   let buttons = [
-    <Button action="tx" target={`/${contractAddress}/${tokenId}/mint/1/txdata`}>
+    <Button
+      action="tx"
+      target={`/${contractAddress}/${tokenId}/mint/1/txdata`}
+      post_url={`/${contractAddress}/${tokenId}/mint/1/success`}
+    >
       {mint1ButtonText}
     </Button>,
-    <Button action="tx" target={`/${contractAddress}/${tokenId}/mint/3/txdata`}>
+    <Button
+      action="tx"
+      target={`/${contractAddress}/${tokenId}/mint/3/txdata`}
+      post_url={`/${contractAddress}/${tokenId}/mint/3/success`}
+    >
       {mint3ButtonText}
     </Button>,
     <Button
       action="tx"
       target={`/${contractAddress}/${tokenId}/mint/11/txdata`}
+      post_url={`/${contractAddress}/${tokenId}/mint/11/success`}
     >
       {mint11ButtonText}
     </Button>,
@@ -81,20 +83,8 @@ const handleRequest = frames(async (ctx) => {
         action="tx"
         target={`/${contractAddress}/${tokenId}/mint/1/txdata`}
       >
-        ERC20 mint
+        ERC20 mints inactive atm
       </Button>,
-      // <Button
-      //   action="tx"
-      //   target={`/${contractAddress}/${tokenId}/mint/3/txdata`}
-      // >
-      //   {mint3ButtonText}
-      // </Button>,
-      // <Button
-      //   action="tx"
-      //   target={`/${contractAddress}/${tokenId}/mint/11/txdata`}
-      // >
-      //   {mint11ButtonText}
-      // </Button>,
     ];
   }
 

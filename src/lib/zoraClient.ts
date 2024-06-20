@@ -6,3 +6,4 @@ export const collectorClient = createCollectorClient({
   chainId: CHAIN_ID,
   publicClient,
 });
+console.log("collectorClient", collectorClient);

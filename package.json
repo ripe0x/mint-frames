@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@neynar/nodejs-sdk": "^1.31.0",
     "@wagmi/core": "^2.11.2",
     "@zoralabs/protocol-sdk": "^0.6.0",
     "frames.js": "^0.17.0",
