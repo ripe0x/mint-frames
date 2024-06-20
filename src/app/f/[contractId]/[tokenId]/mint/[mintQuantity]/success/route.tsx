@@ -34,15 +34,23 @@ const handleRequest = frames(async (ctx) => {
   // const creatorFarcasterHandle = await getFarcasterUsernameFromAddress(
   //   await getContractOwner(contractAddress)
   // );
-  const creatorFarcasterHandle = false; // temp remove due to error with neynar node version requirement
-  const castText = `Mint ${metadataJson.name} ${
-    creatorFarcasterHandle &&
-    `by @${creatorFarcasterHandle} with the drops.wtf frame \n \n ${frameUrl(
-      ctx.url.origin,
-      contractAddress,
-      tokenId
-    )}`
-  }`;
+
+  // const castText = `Mint ${metadataJson.name} ${
+  //   creatorFarcasterHandle &&
+  //   `by @${creatorFarcasterHandle} with the drops.wtf frame \n \n ${frameUrl(
+  //     ctx.url.origin,
+  //     contractAddress,
+  //     tokenId
+  //   )}`
+  // }`;
+  const castText = `Mint ${
+    metadataJson.name
+  }  with the drops.wtf frame \n \n ${frameUrl(
+    ctx.url.origin,
+    contractAddress,
+    tokenId
+  )}
+  `;
 
   let buttons = [
     <Button action="link" target={zoraMintPageUrl(contractAddress, tokenId)}>
@@ -53,9 +61,7 @@ const handleRequest = frames(async (ctx) => {
     </Button>,
   ];
 
-  const imageText = `Minted ${mintQuantity} ${metadataJson.name} ${
-    creatorFarcasterHandle && `by ${creatorFarcasterHandle}`
-  }`;
+  const imageText = `Minted ${mintQuantity} ${metadataJson.name}`;
 
   return {
     image: (
