@@ -5,7 +5,7 @@ import { zoraERC1155Abi } from "@/abi/zoraERC1155Abi";
 import { publicClient } from "@/lib/viemClient";
 import { frameUrl, postCastUrl, zoraMintPageUrl } from "@/lib/utilities";
 import { getContractOwner } from "@/lib/getContractOwner";
-import { getFarcasterUsernameFromAddress } from "@/lib/getFarcasterUsernameFromAddress";
+// import { getFarcasterUsernameFromAddress } from "@/lib/getFarcasterUsernameFromAddress";
 
 // this is for 1155 contracts
 const handleRequest = frames(async (ctx) => {
