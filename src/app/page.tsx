@@ -16,5 +16,10 @@ export async function generateMetadata() {
 }
 
 export default function Page() {
-  return <span>My existing page</span>;
+  return (
+    <div>
+      <p>mint zora nfts in fc frames.</p>
+      <p>not publicly released yet so things may break.</p>
+    </div>
+  );
 }
