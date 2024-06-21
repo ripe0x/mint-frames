@@ -1,8 +1,9 @@
 import { fetchMetadata } from "frames.js/next";
+import UrlInput from "./components/UrlInput";
 
 export async function generateMetadata() {
   return {
-    title: "My Page",
+    title: "mint drops",
     // provide a full URL to your /frames endpoint
     other: await fetchMetadata(
       new URL(
@@ -18,8 +19,7 @@ export async function generateMetadata() {
 export default function Page() {
   return (
     <div>
-      <p>mint zora nfts in fc frames.</p>
-      <p>not publicly released yet so things may break.</p>
+      <UrlInput />
     </div>
   );
 }

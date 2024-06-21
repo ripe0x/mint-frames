@@ -68,13 +68,13 @@ const handleRequest = frames(async (ctx) => {
     >
       {mint3ButtonText}
     </Button>,
-    <Button
-      action="tx"
-      target={`/${contractAddress}/${tokenId}/mint/11/txdata`}
-      post_url={`/${contractAddress}/${tokenId}/mint/11/success`}
-    >
-      {mint11ButtonText}
-    </Button>,
+    // <Button
+    //   action="tx"
+    //   target={`/${contractAddress}/${tokenId}/mint/11/txdata`}
+    //   post_url={`/${contractAddress}/${tokenId}/mint/11/success`}
+    // >
+    //   {mint11ButtonText}
+    // </Button>,
   ];
 
   if (isERC20Mint) {

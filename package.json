@@ -9,14 +9,17 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@frames.js/render": "^0.2.15",
     "@neynar/nodejs-sdk": "^1.31.0",
     "@wagmi/core": "^2.11.2",
     "@zoralabs/protocol-sdk": "^0.6.0",
+    "clsx": "^2.1.1",
     "frames.js": "^0.17.0",
     "next": "14.2.4",
     "node-fetch": "^3.3.2",
     "react": "^18",
     "react-dom": "^18",
+    "tailwind-merge": "^2.3.0",
     "viem": "^2.14.2"
   },
   "devDependencies": {
