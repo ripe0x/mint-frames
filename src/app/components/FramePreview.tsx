@@ -19,6 +19,15 @@ import { Button } from "frames.js/next";
 
 type Props = {
   frameUrl: string;
+  setFrameStateRequestStatus: (
+    status:
+      | "message"
+      | "pending"
+      | "done"
+      | "doneRedirect"
+      | "requestError"
+      | undefined
+  ) => void;
 };
 
 const FramePreview = (props: Props) => {
@@ -65,18 +74,33 @@ const FramePreview = (props: Props) => {
   useEffect(() => {
     console.log("frameState", frameState);
     console.log("frameState.framesStack", frameState.framesStack);
+    if (frameState.currentFrameStackItem?.status) {
+      props.setFrameStateRequestStatus(frameState.currentFrameStackItem.status);
+    }
   }, [frameState]);
 
   return (
-    <div className="w-[400px]">
-      frame:
-      <FrameUI
-        frameState={frameState}
-        theme={{}}
-        FrameImage={FrameImageNext}
-        allowPartialFrame={true}
-      />
-      <div></div>
+    <div className="w-[400px] text-center">
+      {frameState.currentFrameStackItem?.status === "pending" && (
+        <div>Loading frame preview...</div>
+      )}
+      {frameState.currentFrameStackItem?.status === "requestError" && (
+        <div>
+          Error:{" "}
+          <strong>{frameState.currentFrameStackItem.requestError.name}</strong>
+          {frameState.currentFrameStackItem.requestError.message}
+        </div>
+      )}
+      {frameState.currentFrameStackItem?.status === "done" && (
+        <div>
+          <FrameUI
+            frameState={frameState}
+            theme={{}}
+            FrameImage={FrameImageNext}
+            // allowPartialFrame={true}
+          />
+        </div>
+      )}
     </div>
   );
 };

@@ -1,10 +1,14 @@
 "use client";
-import React from "react";
+import React, { useState } from "react";
 import FramePreview from "./FramePreview";
+import CopyLink from "./CopyLink";
 
 type Props = {};
 
 const UrlInput = (props: Props) => {
+  const [frameStateRequestStatus, setFrameStateRequestStatus] = useState<
+    "message" | "pending" | "done" | "doneRedirect" | "requestError" | undefined
+  >();
   const [contractAddress, setContractAddress] = React.useState("");
   const [tokenId, setTokenId] = React.useState("");
   const [url, setUrl] = React.useState("");
@@ -21,7 +25,7 @@ const UrlInput = (props: Props) => {
 
   return (
     <div>
-      <form className="max-w-md mx-auto">
+      <form className="max-w-2xl mx-auto mt-10">
         <label
           htmlFor="default-search"
           className="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-white"
@@ -62,20 +66,23 @@ const UrlInput = (props: Props) => {
           </button> */}
         </div>
       </form>
-      {contractAddress && tokenId && (
-        <div>
-          <p>Contract Address: {contractAddress}</p>
-          <p>Token Id: {tokenId}</p>
-          <p>
-            frame link: https://mint-drops.netlify.app/f/{contractAddress}/
-            {tokenId}
-          </p>
-        </div>
-      )}
-      <FramePreview
-        // frameUrl={`https://mint-drops.netlify.app/f/${contractAddress}/${tokenId}`}
-        frameUrl={`http://localhost:3000/f/${contractAddress}/${tokenId}`}
-      />
+      {/* {frameStateRequestStatus && ( */}
+      <div className="flex justify-center mt-20">
+        <FramePreview
+          frameUrl={`http://localhost:3000/f/${contractAddress}/${tokenId}`}
+          setFrameStateRequestStatus={setFrameStateRequestStatus}
+        />
+      </div>
+      <div className="flex justify-center mt-6 text-center">
+        {frameStateRequestStatus === "done" && (
+          <div className="w-full max-w-[400px]">
+            <CopyLink
+              url={`https://mint-drops.netlify.app/f/${contractAddress}/${tokenId}`}
+            />
+          </div>
+        )}
+      </div>
+      {/* )} */}
     </div>
   );
 };
