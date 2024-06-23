@@ -4,11 +4,13 @@ import { frames } from "../../../../frames";
 import { zoraERC1155Abi } from "@/abi/zoraERC1155Abi";
 import { publicClient } from "@/lib/viemClient";
 import { frameUrl, postCastUrl, zoraMintPageUrl } from "@/lib/utilities";
-import { getContractOwner } from "@/lib/getContractOwner";
-// import { getFarcasterUsernameFromAddress } from "@/lib/getFarcasterUsernameFromAddress";
 
 // this is for 1155 contracts
 const handleRequest = frames(async (ctx) => {
+  console.log("ctx", ctx);
+  if (!ctx.message || !ctx.message.state) {
+    throw new Error("Invalid Frame");
+  }
   const contractAddress = ctx.url.pathname.split("/")[2] as `0x${string}`; // "f/[contractId]"
   const tokenId = +ctx.url.pathname.split("/")[3]; // "f/[contractId]/[tokenId]"
   const mintQuantity = +ctx.url.pathname.split("/")[5];

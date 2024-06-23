@@ -1,21 +1,14 @@
 "use client";
 import React, { useEffect } from "react";
-import { getFrame, Frame, getFrameFlattened } from "frames.js";
 import { useFrame } from "@frames.js/render/use-frame";
 import {
   FrameUI,
   fallbackFrameContext,
-  FrameContext,
   signFrameAction,
   FarcasterSigner,
 } from "@frames.js/render";
-import {
-  mockFarcasterSigner,
-  createFrameActionMessageWithSignerKey,
-} from "@frames.js/render/farcaster";
 import { FrameImageNext } from "@frames.js/render/next";
-import type { Metadata } from "next";
-import { Button } from "frames.js/next";
+import { parseZoraUrl } from "@/lib/parseZoraUrl";
 
 type Props = {
   frameUrl: string;
@@ -30,9 +23,15 @@ type Props = {
   ) => void;
 };
 
+const isValidUrl = (url: string) => {
+  const { contractAddress, tokenId } = parseZoraUrl(url);
+  if (contractAddress && tokenId) {
+    return true;
+  }
+  return false;
+};
+
 const FramePreview = (props: Props) => {
-  console.log("props", props);
-  const [frame, setFrame] = React.useState<Frame | null>(null);
   const farcasterSigner: FarcasterSigner = {
     fid: 1,
     status: "approved",
@@ -43,64 +42,65 @@ const FramePreview = (props: Props) => {
   };
 
   const frameState = useFrame({
-    // replace with your frame url
-    homeframeUrl:
-      // "https://fc-polls.vercel.app/polls/73c6efda-bae7-4d46-8f36-3bb3b8377448",
-      // props.frameUrl,
-      props.frameUrl,
-    // corresponds to the name of the route for POST in step 3
-    // frameActionProxy: "/f",
+    homeframeUrl: props.frameUrl,
     frameActionProxy: "/frames",
     connectedAddress: undefined,
-    // corresponds to the name of the route for GET in step 3
     frameGetProxy: "/frames",
-    // frameGetProxy: "/f/0xee69c2ac12a2e0aaceaaa8914bd3e8ab52d90c14/8",
     frameContext: fallbackFrameContext,
-    // map to your identity if you have one
     signerState: {
       hasSigner: farcasterSigner !== undefined,
       signer: farcasterSigner,
       onSignerlessFramePress: () => {
         // Only run if `hasSigner` is set to `false`
         // This is a good place to throw an error or prompt the user to login
-        alert(
-          "A frame button was pressed without a signer. Perhaps you want to prompt a login"
-        );
+        alert("Transaction signing is disabled in preview mode.");
       },
       signFrameAction: signFrameAction,
     },
   });
-  console.log("frameState", frameState, frameState.currentFrameStackItem);
   useEffect(() => {
-    console.log("frameState", frameState);
-    console.log("frameState.framesStack", frameState.framesStack);
     if (frameState.currentFrameStackItem?.status) {
       props.setFrameStateRequestStatus(frameState.currentFrameStackItem.status);
     }
   }, [frameState]);
+  console.log("props.frameUrl", props.frameUrl);
 
   return (
     <div className="w-[400px] text-center">
-      {frameState.currentFrameStackItem?.status === "pending" && (
-        <div>Loading frame preview...</div>
-      )}
-      {frameState.currentFrameStackItem?.status === "requestError" && (
+      {!isValidUrl(props.frameUrl) && (
         <div>
-          Error:{" "}
-          <strong>{frameState.currentFrameStackItem.requestError.name}</strong>
-          {frameState.currentFrameStackItem.requestError.message}
+          <p className="text-sm text-gray-400">
+            Invalid URL. Please paste a valid Zora mint URL.
+          </p>
         </div>
       )}
-      {frameState.currentFrameStackItem?.status === "done" && (
-        <div>
-          <FrameUI
-            frameState={frameState}
-            theme={{}}
-            FrameImage={FrameImageNext}
-            // allowPartialFrame={true}
-          />
-        </div>
-      )}
+      {isValidUrl(props.frameUrl) &&
+        frameState.currentFrameStackItem?.status === "pending" && (
+          <div>
+            <p className="text-sm text-gray-400">Loading frame preview...</p>
+          </div>
+        )}
+      {isValidUrl(props.frameUrl) &&
+        frameState.currentFrameStackItem?.status === "requestError" && (
+          <div>
+            Error:{" "}
+            <strong>
+              {frameState.currentFrameStackItem.requestError.name}
+            </strong>
+            {frameState.currentFrameStackItem.requestError.message}
+          </div>
+        )}
+      {isValidUrl(props.frameUrl) &&
+        frameState.currentFrameStackItem?.status === "done" && (
+          <div>
+            <FrameUI
+              frameState={frameState}
+              theme={{}}
+              FrameImage={FrameImageNext}
+              // allowPartialFrame={true}
+            />
+          </div>
+        )}
     </div>
   );
 };
