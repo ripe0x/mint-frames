@@ -9,13 +9,22 @@ export default function Page() {
   useEffect(() => {
     setIsMounted(true);
   }, []);
+  console.log("isMounted", isMounted);
   const origin =
     typeof window !== "undefined" && window.location.origin
       ? window.location.origin
       : "";
+  console.log("origin", origin);
 
   return (
     <div className={inter.className}>
+      {isMounted ? (
+        <>
+          origin: {origin} | isMounted: {isMounted.toString()}
+        </>
+      ) : (
+        "Loading..."
+      )}
       <div className="p-2 xl:mt-10 w-full">
         <div className="text-center">
           <h1 className="font-bold my-2 text-xl">Mint Frames</h1>
@@ -25,7 +34,7 @@ export default function Page() {
           </p>
         </div>
         <div className="w-full my-4 xl:my-8">
-          {isMounted && origin && <UrlInput baseUrl={origin} />}
+          {isMounted ? <UrlInput baseUrl={origin} /> : "Loading url input..."}
         </div>
       </div>
     </div>

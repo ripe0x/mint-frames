@@ -110,7 +110,7 @@ const UrlInput = (props: Props) => {
                 {isValidUrl(url) ? (
                   <>
                     <FramePreview
-                      frameUrl={`${props.baseUrl}/f/${contractAddress}/${tokenId}`}
+                      frameUrl={`${baseUrlPrefix}${props.baseUrl}/f/${contractAddress}/${tokenId}`}
                       setFrameStateRequestStatus={setFrameStateRequestStatus}
                     />
                   </>

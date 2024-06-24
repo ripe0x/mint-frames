@@ -46,6 +46,13 @@ const FramePreview = (props: Props) => {
     connectedAddress: undefined,
     frameGetProxy: "/frames",
     frameContext: fallbackFrameContext,
+    // frameContext: {
+    //   address: "0x",
+    //   castId: {
+    //     hash: "0x",
+    //     fid: 0,
+    //   },
+    // },
     signerState: {
       hasSigner: farcasterSigner !== undefined,
       signer: farcasterSigner,
@@ -73,6 +80,7 @@ const FramePreview = (props: Props) => {
           </p>
         </div>
       )}
+      {/* <FrameUI frameState={frameState as any} theme={{}} /> */}
       {isValidUrl(props.frameUrl) &&
         frameState.currentFrameStackItem?.status === "pending" && (
           <div>
@@ -92,12 +100,7 @@ const FramePreview = (props: Props) => {
       {isValidUrl(props.frameUrl) &&
         frameState.currentFrameStackItem?.status === "done" && (
           <div>
-            <FrameUI
-              frameState={frameState}
-              theme={{}}
-              // FrameImage={FrameImageNext}
-              // allowPartialFrame={true}
-            />
+            <FrameUI frameState={frameState} theme={{}} />
           </div>
         )}
     </div>
