@@ -1,17 +1,17 @@
-import { fetchMetadata } from "frames.js/next";
+// import { fetchMetadata } from "frames.js/next";
 import UrlInput from "./components/UrlInput";
 import { headers } from "next/headers";
 export async function generateMetadata() {
   return {
     title: "Mint Frames",
-    other: await fetchMetadata(
-      new URL(
-        "",
-        process.env.NEXT_PUBLIC_NETLIFY_URL
-          ? `${process.env.NEXT_PUBLIC_NETLIFY_URL}`
-          : "http://localhost:3000"
-      )
-    ),
+    // other: await fetchMetadata(
+    //   new URL(
+    //     "",
+    //     process.env.NEXT_PUBLIC_NETLIFY_URL
+    //       ? `${process.env.NEXT_PUBLIC_NETLIFY_URL}`
+    //       : "http://localhost:3000"
+    //   )
+    // ),
   };
 }
 export default function Page() {
