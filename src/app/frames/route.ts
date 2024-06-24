@@ -62,7 +62,7 @@ import { getAction } from "../actions/getAction";
 import { persistMockResponsesForDebugHubRequests } from "../utils/mock-hub-utils";
 import type { SupportedParsingSpecification } from "frames.js";
 
-export function isSpecificationValid(
+function isSpecificationValid(
   specification: unknown
 ): specification is SupportedParsingSpecification {
   return (

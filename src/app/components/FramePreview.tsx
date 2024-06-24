@@ -7,7 +7,6 @@ import {
   signFrameAction,
   FarcasterSigner,
 } from "@frames.js/render";
-import { FrameImageNext } from "@frames.js/render/next";
 import { parseZoraUrl } from "@/lib/parseZoraUrl";
 
 type Props = {
@@ -58,12 +57,12 @@ const FramePreview = (props: Props) => {
       signFrameAction: signFrameAction,
     },
   });
+  console.log("frameState", frameState);
   useEffect(() => {
     if (frameState.currentFrameStackItem?.status) {
       props.setFrameStateRequestStatus(frameState.currentFrameStackItem.status);
     }
   }, [frameState]);
-  console.log("props.frameUrl", props.frameUrl);
 
   return (
     <div className="w-[400px] text-center">
@@ -96,7 +95,7 @@ const FramePreview = (props: Props) => {
             <FrameUI
               frameState={frameState}
               theme={{}}
-              FrameImage={FrameImageNext}
+              // FrameImage={FrameImageNext}
               // allowPartialFrame={true}
             />
           </div>
