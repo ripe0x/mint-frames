@@ -7,7 +7,6 @@ import { frameUrl, postCastUrl, zoraMintPageUrl } from "@/lib/utilities";
 
 // this is for 1155 contracts
 const handleRequest = frames(async (ctx) => {
-  console.log("ctx", ctx);
   if (!ctx.message || !ctx.message.state) {
     throw new Error("Invalid Frame");
   }
@@ -33,18 +32,7 @@ const handleRequest = frames(async (ctx) => {
     "ipfs://",
     "https://drops.infura-ipfs.io/ipfs/"
   );
-  // const creatorFarcasterHandle = await getFarcasterUsernameFromAddress(
-  //   await getContractOwner(contractAddress)
-  // );
 
-  // const castText = `Mint ${metadataJson.name} ${
-  //   creatorFarcasterHandle &&
-  //   `by @${creatorFarcasterHandle} with the drops.wtf frame \n \n ${frameUrl(
-  //     ctx.url.origin,
-  //     contractAddress,
-  //     tokenId
-  //   )}`
-  // }`;
   const castText = `Mint ${
     metadataJson.name
   }  with the drops.wtf frame \n \n ${frameUrl(

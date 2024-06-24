@@ -11,7 +11,6 @@ import { zoraERC1155Abi } from "@/abi/zoraERC1155Abi";
 import { CHAIN_ID, ZORA_CONTRACT_FIXED_PRICE_SALE_STRATEGY } from "@/constants";
 
 export const POST = frames(async (ctx) => {
-  console.log("ctx", ctx);
   // Do something with the request data to generate transaction data
   const contractAddress = ctx.url.pathname.split("/")[2] as `0x${string}`; // "f/[contractId]"
   const tokenId = +ctx.url.pathname.split("/")[3];

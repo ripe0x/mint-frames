@@ -1,19 +1,20 @@
+import { fetchMetadata } from "frames.js/next";
 import UrlInput from "./components/UrlInput";
 import { headers } from "next/headers";
-
-// const inter = Inter({ subsets: ["latin"] });
+export async function generateMetadata() {
+  return {
+    title: "Mint Frames",
+    other: await fetchMetadata(
+      new URL(
+        "",
+        process.env.NEXT_PUBLIC_NETLIFY_URL
+          ? `${process.env.NEXT_PUBLIC_NETLIFY_URL}`
+          : "http://localhost:3000"
+      )
+    ),
+  };
+}
 export default function Page() {
-  // const [isMounted, setIsMounted] = useState(false);
-  // useEffect(() => {
-  //   setIsMounted(true);
-  // }, []);
-  // console.log("isMounted", isMounted);
-  // const origin =
-  //   typeof window !== "undefined" && window.location.origin
-  //     ? window.location.origin
-  //     : "";
-  // console.log("origin", origin);
-
   const headersList = headers();
 
   const origin = headersList.get("host");
@@ -22,8 +23,7 @@ export default function Page() {
       <div className="text-center">
         <h1 className="font-bold my-2 text-xl">Mint Frames</h1>
         <p className="text-sm text-gray-300">
-          Mint directly from your farcaster feed with a mint frame. Currently
-          works with Zora contracts.
+          Mint directly from your Farcaster feed with a mint frame
         </p>
       </div>
       <div className="w-full my-4 xl:my-8">
