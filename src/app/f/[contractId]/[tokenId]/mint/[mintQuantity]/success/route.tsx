@@ -4,6 +4,7 @@ import { frames } from "../../../../frames";
 import { zoraERC1155Abi } from "@/abi/zoraERC1155Abi";
 import { publicClient } from "@/lib/viemClient";
 import { frameUrl, postCastUrl, zoraMintPageUrl } from "@/lib/utilities";
+import { collectorClient } from "@/lib/zoraClient";
 
 // this is for 1155 contracts
 const handleRequest = frames(async (ctx) => {
@@ -46,7 +47,37 @@ const handleRequest = frames(async (ctx) => {
   )}
   `;
 
+  let mintAgainButton = (
+    <Button action="post" target={`/${contractAddress}/${tokenId}`}>
+      Mint again 🔄
+    </Button>
+  );
+
+  const mintCosts = await collectorClient.getMintCosts({
+    collection: contractAddress as `0x${string}`,
+    tokenId,
+    quantityMinted: BigInt(mintQuantity),
+    mintType: "1155",
+  });
+
+  // if erc20 mint, skip approval step (already approved) and send user directly to mint
+  if (mintCosts.totalPurchaseCostCurrency) {
+    console.log(
+      "mintCosts.totalPurchaseCostCurrency",
+      mintCosts.totalPurchaseCostCurrency
+    );
+    mintAgainButton = (
+      <Button
+        action="post"
+        target={`/${contractAddress}/${tokenId}/mint/${mintQuantity}/mintWithErc20`}
+      >
+        Mint again 🔄
+      </Button>
+    );
+  }
+
   let buttons = [
+    mintAgainButton,
     <Button action="link" target={zoraMintPageUrl(contractAddress, tokenId)}>
       View on Zora
     </Button>,
@@ -60,17 +91,17 @@ const handleRequest = frames(async (ctx) => {
   return {
     image: (
       <div tw="flex w-full h-full bg-black">
-        <div tw="bg-transparent text-white w-full h-full justify-center items-center flex text-center gap-4 flex-col text-[30px] font-bold">
+        <div tw="bg-transparent text-white w-full h-full justify-center items-center flex text-center gap-4 flex-col text-[22px] font-bold">
           <img src={image} tw="blur-xl absolute opacity-35" />
-          <span tw="font-bold mb-4 px-10">Success 🎉</span>
+          <span tw="font-bold mb-4 px-10">Success!</span>
           <span>{imageText}</span>
         </div>
       </div>
     ),
     imageOptions: {
       aspectRatio: "1:1",
-      width: 400,
-      height: 400,
+      width: 300,
+      height: 300,
     },
     buttons: buttons,
   };
