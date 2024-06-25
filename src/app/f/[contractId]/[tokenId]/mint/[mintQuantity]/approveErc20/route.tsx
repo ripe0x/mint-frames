@@ -25,16 +25,6 @@ export const POST = frames(async (ctx) => {
   console.log("erc20Approval", erc20Approval);
   console.log("totalPurchaseCost", totalPurchaseCost);
 
-  // // request necessary erc20 approvals as returned from the sdk's mint call
-  // const approveHash = await walletClient.writeContract({
-  //   abi: erc20Abi,
-  //   address: erc20Approval!.erc20,
-  //   functionName: "approve",
-  //   args: [erc20Approval!.approveTo, erc20Approval!.quantity],
-  //   account: accountAddress,
-  // });
-  // console.log("approveHash", approveHash);
-
   const calldata = encodeFunctionData({
     abi: erc20Abi,
     functionName: "approve",
