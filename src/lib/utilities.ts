@@ -29,3 +29,9 @@ export const frameUrl = (
 
   return `${baseUrl}/f/${contractAddress}/${tokenId}`;
 };
+
+export const truncAddr = (address: string, amount: number = 4) =>
+  `${address?.slice(0, amount)}...${address?.slice(
+    address.length - amount,
+    address.length
+  )}`;

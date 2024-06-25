@@ -10,7 +10,10 @@ import { getIsErc20Approved } from "@/lib/getIsErc20Approved";
 import { getAccountTokenBalance } from "@/lib/getAccountTokenBalance";
 import { getErc20Details } from "@/lib/getErc20Details";
 import { ZORA_CONTRACT_ERC20_MINTER_ADDRESS } from "@/constants";
-import { zoraMintPageUrl } from "@/lib/utilities";
+import { truncAddr, zoraMintPageUrl } from "@/lib/utilities";
+import { getContractOwner } from "@/lib/getContractOwner";
+import getL1EnsName from "@/lib/getL1EnsName";
+import { getTokenDetailsButtonText } from "@/lib/getTokenDetailsButtonText";
 
 // this is for 1155 contracts
 const handleRequest = frames(async (ctx) => {
@@ -36,6 +39,7 @@ const handleRequest = frames(async (ctx) => {
   // fetch token metadata
   const metadata = await fetch(tokenUriUrl);
   const metadataJson = await metadata.json();
+  console.log("metadataJson", metadataJson);
   const image = metadataJson.image.replace(
     "ipfs://",
     "https://drops.infura-ipfs.io/ipfs/"
@@ -53,7 +57,7 @@ const handleRequest = frames(async (ctx) => {
     quantityMinted: 1,
     mintType: "1155",
   });
-  console.log("mintCosts", mintCosts);
+
   if (mintCosts.totalPurchaseCostCurrency) {
     isERC20Mint = true;
     const { symbol } = await getErc20Details(
@@ -63,22 +67,16 @@ const handleRequest = frames(async (ctx) => {
     erc20Symbol = symbol;
   }
 
-  let nftDetailsButtonText = `View on Zora: ${metadataJson.name}`;
-
   let buttons = [
+    <Button action="link" target={zoraMintPageUrl(contractAddress, tokenId)}>
+      {await getTokenDetailsButtonText(contractAddress, metadataJson.name)}
+    </Button>,
     <Button
       action="tx"
       target={`/${contractAddress}/${tokenId}/mint/1/txdata`}
       post_url={`/${contractAddress}/${tokenId}/mint/1/success`}
     >
       {mint1ButtonText}
-    </Button>,
-    <Button
-      action="tx"
-      target={`/${contractAddress}/${tokenId}/mint/3/txdata`}
-      post_url={`/${contractAddress}/${tokenId}/mint/3/success`}
-    >
-      {mint3ButtonText}
     </Button>,
   ];
 
@@ -90,6 +88,9 @@ const handleRequest = frames(async (ctx) => {
       BigInt(3) * mintCosts.totalPurchaseCost
     )} $${erc20Symbol} to mint 3`;
     buttons = [
+      <Button action="link" target={zoraMintPageUrl(contractAddress, tokenId)}>
+        {await getTokenDetailsButtonText(contractAddress, metadataJson.name)}
+      </Button>,
       <Button
         action="tx"
         target={{
@@ -105,25 +106,21 @@ const handleRequest = frames(async (ctx) => {
       >
         {mint1ButtonText}
       </Button>,
-
-      <Button
-        action="tx"
-        target={{
-          query: {
-            erc20TokenAddress: mintCosts.totalPurchaseCostCurrency,
-            totalPurchaseCost: mintCosts.totalPurchaseCost.toString(),
-            mintQuantity: 3,
-            tokenId: tokenId,
-          },
-          pathname: `/${contractAddress}/${tokenId}/mint/3/approveErc20`,
-        }}
-        post_url={`/${contractAddress}/${tokenId}/mint/3/mintWithErc20`}
-      >
-        {mint3ButtonText}
-      </Button>,
-      <Button action="link" target={zoraMintPageUrl(contractAddress, tokenId)}>
-        {nftDetailsButtonText}
-      </Button>,
+      // <Button
+      //   action="tx"
+      //   target={{
+      //     query: {
+      //       erc20TokenAddress: mintCosts.totalPurchaseCostCurrency,
+      //       totalPurchaseCost: mintCosts.totalPurchaseCost.toString(),
+      //       mintQuantity: 3,
+      //       tokenId: tokenId,
+      //     },
+      //     pathname: `/${contractAddress}/${tokenId}/mint/3/approveErc20`,
+      //   }}
+      //   post_url={`/${contractAddress}/${tokenId}/mint/3/mintWithErc20`}
+      // >
+      //   {mint3ButtonText}
+      // </Button>,
     ];
   }
 
