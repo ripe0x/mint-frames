@@ -15,7 +15,8 @@ export const POST = frames(async (ctx) => {
     args: [
       spenderAddress as `0x${string}`,
       // BigInt(totalPurchaseCost) * BigInt(mintQuantity),
-      maxUint256,
+      // maxUint256,
+      BigInt(totalPurchaseCost),
     ],
   });
 
