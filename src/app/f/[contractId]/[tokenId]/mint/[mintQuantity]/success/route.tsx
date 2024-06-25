@@ -7,7 +7,9 @@ import { frameUrl, postCastUrl, zoraMintPageUrl } from "@/lib/utilities";
 
 // this is for 1155 contracts
 const handleRequest = frames(async (ctx) => {
-  if (!ctx.message || !ctx.message.state) {
+  console.log("ctx", ctx);
+  // if (!ctx.message || !ctx.message.state) {
+  if (!ctx) {
     throw new Error("Invalid Frame");
   }
   const contractAddress = ctx.url.pathname.split("/")[2] as `0x${string}`; // "f/[contractId]"
@@ -33,6 +35,8 @@ const handleRequest = frames(async (ctx) => {
     "https://drops.infura-ipfs.io/ipfs/"
   );
 
+  console.log("image", image);
+
   const castText = `Mint ${
     metadataJson.name
   }  with the drops.wtf frame \n \n ${frameUrl(
@@ -56,15 +60,17 @@ const handleRequest = frames(async (ctx) => {
   return {
     image: (
       <div tw="flex w-full h-full bg-black">
-        <div tw="bg-transparent text-white w-full h-full p-10 justify-center items-center flex text-center gap-4 flex-col text-[60px] font-bold">
+        <div tw="bg-transparent text-white w-full h-full justify-center items-center flex text-center gap-4 flex-col text-[30px] font-bold">
           <img src={image} tw="blur-xl absolute opacity-35" />
-          <span tw="font-bold mb-4">Success 🎉</span>
+          <span tw="font-bold mb-4 px-10">Success 🎉</span>
           <span>{imageText}</span>
         </div>
       </div>
     ),
     imageOptions: {
       aspectRatio: "1:1",
+      width: 400,
+      height: 400,
     },
     buttons: buttons,
   };

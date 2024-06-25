@@ -11,3 +11,5 @@ export const ZORA_CONTRACT_FIXED_PRICE_SALE_STRATEGY = isProd
     "0x6d28164C3CE04A190D5F9f0f8881fc807EAD975A"; // zora sepolia
 export const CHAIN_ID = isProd ? 8453 : 999999999; // 84532 for base mainnet, 999999999 for zora sepolia
 export let L1_PROVIDER = process.env.NEXT_PUBLIC_MAINNET_PROVIDER as string;
+export const ZORA_CONTRACT_ERC20_MINTER_ADDRESS =
+  "0x777777E8850d8D6d98De2B5f64fae401F96eFF31"; // base
