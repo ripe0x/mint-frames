@@ -8,7 +8,6 @@ import { collectorClient } from "@/lib/zoraClient";
 
 // this is for 1155 contracts
 const handleRequest = frames(async (ctx) => {
-  console.log("ctx", ctx);
   // if (!ctx.message || !ctx.message.state) {
   if (!ctx) {
     throw new Error("Invalid Frame");
@@ -62,10 +61,6 @@ const handleRequest = frames(async (ctx) => {
 
   // if erc20 mint, skip approval step (already approved) and send user directly to mint
   if (mintCosts.totalPurchaseCostCurrency) {
-    console.log(
-      "mintCosts.totalPurchaseCostCurrency",
-      mintCosts.totalPurchaseCostCurrency
-    );
     mintAgainButton = (
       <Button
         action="post"
@@ -91,7 +86,7 @@ const handleRequest = frames(async (ctx) => {
   return {
     image: (
       <div tw="flex w-full h-full bg-black">
-        <div tw="bg-transparent text-white w-full h-full justify-center items-center flex text-center gap-4 flex-col text-[22px] font-bold">
+        <div tw="bg-transparent text-white w-full h-full justify-center items-center flex text-center gap-4 flex-col text-[18px] font-bold">
           <img src={image} tw="blur-xl absolute opacity-35" />
           <span tw="font-bold mb-4 px-10">Success!</span>
           <span>{imageText}</span>
