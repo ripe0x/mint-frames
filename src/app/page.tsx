@@ -4,6 +4,7 @@ import { headers } from "next/headers";
 export async function generateMetadata() {
   return {
     title: "Mint Frames | drops.wtf",
+    description: "Mint directly from your Farcaster feed with a mint frame.",
     // other: await fetchMetadata(
     //   new URL(
     //     "",
@@ -24,7 +25,7 @@ export default function Page() {
         <h1 className="font-bold my-2 text-xl">Mint Frames</h1>
         <p className="text-sm text-gray-300">
           Mint directly from your Farcaster feed with a mint frame. Currently
-          only works on Zora contracts on Base.
+          works on Zora 1155 contracts on Base.
         </p>
       </div>
       <div className="w-full my-4 xl:my-8">
