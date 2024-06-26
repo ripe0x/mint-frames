@@ -40,6 +40,7 @@ export const POST = frames(async (ctx) => {
   return transaction({
     chainId: `eip155:${CHAIN_ID}`,
     method: "eth_sendTransaction",
+    attribution: false,
     params: {
       abi: erc20Abi as Abi,
       to: tokenContractAddress as `0x${string}`,
