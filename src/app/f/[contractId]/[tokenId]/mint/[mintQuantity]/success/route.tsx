@@ -5,6 +5,9 @@ import { zoraERC1155Abi } from "@/abi/zoraERC1155Abi";
 import { publicClient } from "@/lib/viemClient";
 import { frameUrl, postCastUrl, zoraMintPageUrl } from "@/lib/utilities";
 import { collectorClient } from "@/lib/zoraClient";
+import { getTokenCreatorOwnerDisplayName } from "@/lib/getTokenCreatorOwnerDisplayName";
+import { getFcUsernameFromAddress } from "@/lib/getFcUsernameFromAddress";
+import { getContractOwner } from "@/lib/getContractOwner";
 
 // this is for 1155 contracts
 const handleRequest = frames(async (ctx) => {
@@ -35,11 +38,14 @@ const handleRequest = frames(async (ctx) => {
     "https://drops.infura-ipfs.io/ipfs/"
   );
 
-  console.log("image", image);
-
-  const castText = `Mint ${
-    metadataJson.name
-  }  with the drops.wtf frame \n \n ${frameUrl(
+  const creatorFcUsername = await getFcUsernameFromAddress(
+    await getContractOwner(contractAddress)
+  );
+  const castText = `Mint ${metadataJson.name} by ${
+    creatorFcUsername
+      ? `@${creatorFcUsername}`
+      : await getTokenCreatorOwnerDisplayName(contractAddress)
+  } with the drops.wtf frame \n ${frameUrl(
     ctx.url.origin,
     contractAddress,
     tokenId

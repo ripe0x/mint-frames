@@ -1,18 +1,15 @@
 import { getContractOwner } from "./getContractOwner";
 import getL1EnsName from "./getL1EnsName";
+import { getTokenCreatorOwnerDisplayName } from "./getTokenCreatorOwnerDisplayName";
 import { truncAddr } from "./utilities";
 
 export const getTokenDetailsButtonText = async (
   contractAddress: string,
   tokenName: string
 ) => {
-  const contractOwner = await getContractOwner(contractAddress);
-
-  const creatorEnsName = await getL1EnsName(contractOwner as `0x${string}`);
-  let creatorDisplayName = truncAddr(contractOwner as `0x${string}`, 4);
-  if (creatorEnsName) {
-    creatorDisplayName = creatorEnsName;
-  }
+  const creatorDisplayName = await getTokenCreatorOwnerDisplayName(
+    contractAddress
+  );
   let nftDetailsButtonText = `${tokenName} by ${creatorDisplayName}`;
 
   return nftDetailsButtonText;
