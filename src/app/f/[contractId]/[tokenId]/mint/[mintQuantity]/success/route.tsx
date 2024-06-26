@@ -38,13 +38,21 @@ const handleRequest = frames(async (ctx) => {
     "https://drops.infura-ipfs.io/ipfs/"
   );
 
-  const creatorFcUsername = await getFcUsernameFromAddress(
-    await getContractOwner(contractAddress)
-  );
-  const castText = `Mint ${metadataJson.name} by ${
-    creatorFcUsername
-      ? `@${creatorFcUsername}`
-      : await getTokenCreatorOwnerDisplayName(contractAddress)
+  // const creatorFcUsername = await getFcUsernameFromAddress(
+  //   await getContractOwner(contractAddress)
+  // );
+  // const castText = `Mint ${metadataJson.name} by ${
+  //   creatorFcUsername
+  //     ? `@${creatorFcUsername}`
+  //     : await getTokenCreatorOwnerDisplayName(contractAddress)
+  // } with the drops.wtf frame \n\n${frameUrl(
+  //   ctx.url.origin,
+  //   contractAddress,
+  //   tokenId
+  // )}
+  // `;
+  const castText = `Mint ${
+    metadataJson.name
   } with the drops.wtf frame \n\n${frameUrl(
     ctx.url.origin,
     contractAddress,
