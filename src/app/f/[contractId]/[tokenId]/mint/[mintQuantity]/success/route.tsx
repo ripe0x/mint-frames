@@ -45,7 +45,7 @@ const handleRequest = frames(async (ctx) => {
     creatorFcUsername
       ? `@${creatorFcUsername}`
       : await getTokenCreatorOwnerDisplayName(contractAddress)
-  } with the drops.wtf frame \n ${frameUrl(
+  } with the drops.wtf frame \n\n${frameUrl(
     ctx.url.origin,
     contractAddress,
     tokenId
