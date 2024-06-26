@@ -3,7 +3,7 @@ import UrlInput from "./components/UrlInput";
 import { headers } from "next/headers";
 export async function generateMetadata() {
   return {
-    title: "Mint Frames",
+    title: "Mint Frames | drops.wtf",
     // other: await fetchMetadata(
     //   new URL(
     //     "",
