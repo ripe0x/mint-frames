@@ -92,8 +92,8 @@ const handleRequest = frames(async (ctx) => {
   return {
     image: (
       <div tw="flex w-full h-full bg-black">
-        <div tw="bg-transparent text-white w-full h-full justify-center items-center flex text-center gap-4 flex-col text-[18px] font-bold">
-          <img src={image} tw="blur-xl absolute opacity-35" />
+        <div tw="bg-transparent text-white w-full h-full justify-center items-center flex text-center flex-col text-[18px] font-bold">
+          <img src={image} tw="absolute opacity-35" />
           <span tw="font-bold mb-4 px-10">Success!</span>
           <span>{imageText}</span>
         </div>
