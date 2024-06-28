@@ -22,8 +22,8 @@ const handleRequest = frames(async (ctx) => {
   let isERC20BalanceAvailable = false;
   let erc20Symbol;
   const accountAddress = ctx.message?.connectedAddress as `0x${string}`;
-  const contractAddress = ctx.url.pathname.split("/")[2] as `0x${string}`; // "f/[contractId]"
-  const tokenId = +ctx.url.pathname.split("/")[3]; // "f/[contractId]/[tokenId]"
+  const contractAddress = ctx.url.pathname.split("/")[3] as `0x${string}`; // "f/[contractId]"
+  const tokenId = +ctx.url.pathname.split("/")[4]; // "f/[contractId]/[tokenId]"
   const { price, zoraFee } = await get1155MintDetails(contractAddress, tokenId);
   const tokenURI = await publicClient.readContract({
     address: contractAddress,

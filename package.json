@@ -11,6 +11,8 @@
   "dependencies": {
     "@frames.js/render": "^0.2.15",
     "@neynar/nodejs-sdk": "^1.31.0",
+    "@rainbow-me/rainbowkit": "^2.1.2",
+    "@tanstack/react-query": "^5.48.0",
     "@wagmi/core": "^2.11.2",
     "@zoralabs/protocol-sdk": "^0.6.0",
     "clsx": "^2.1.1",
@@ -20,7 +22,8 @@
     "react": "^18",
     "react-dom": "^18",
     "tailwind-merge": "^2.3.0",
-    "viem": "^2.14.2"
+    "viem": "^2.14.2",
+    "wagmi": "^2.10.8"
   },
   "devDependencies": {
     "@types/node": "^20",

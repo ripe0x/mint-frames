@@ -19,10 +19,10 @@ import { writeContract } from "viem/actions";
 import { publicClient } from "@/lib/viemClient";
 
 export const POST = frames(async (ctx) => {
-  const contractAddress = ctx.url.pathname.split("/")[2] as `0x${string}`; // "f/[contractId]"
-  const tokenId = +ctx.url.pathname.split("/")[3];
+  const contractAddress = ctx.url.pathname.split("/")[3] as `0x${string}`; // "f/[contractId]"
+  const tokenId = +ctx.url.pathname.split("/")[4];
   const accountAddress = ctx.message?.connectedAddress as `0x${string}`;
-  const mintQuantity = +ctx.url.pathname.split("/")[5];
+  const mintQuantity = +ctx.url.pathname.split("/")[6];
 
   const { parameters } = await collectorClient.mint({
     tokenContract: contractAddress,

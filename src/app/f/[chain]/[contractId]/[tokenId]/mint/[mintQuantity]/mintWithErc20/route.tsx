@@ -9,9 +9,9 @@ import { getErc20Details } from "@/lib/getErc20Details";
 
 // used to mint 1155 tokens after approval
 const handleRequest = frames(async (ctx) => {
-  const contractAddress = ctx.url.pathname.split("/")[2] as `0x${string}`; // "f/[contractId]"
-  const tokenId = +ctx.url.pathname.split("/")[3]; // "f/[contractId]/[tokenId]"
-  const mintQuantity = +ctx.url.pathname.split("/")[5];
+  const contractAddress = ctx.url.pathname.split("/")[3] as `0x${string}`; // "f/[contractId]"
+  const tokenId = +ctx.url.pathname.split("/")[4]; // "f/[contractId]/[tokenId]"
+  const mintQuantity = +ctx.url.pathname.split("/")[6];
 
   const tokenURI = await publicClient.readContract({
     address: contractAddress as `0x${string}`,

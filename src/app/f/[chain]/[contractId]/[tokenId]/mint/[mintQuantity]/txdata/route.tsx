@@ -12,10 +12,10 @@ import { CHAIN_ID, ZORA_CONTRACT_FIXED_PRICE_SALE_STRATEGY } from "@/constants";
 
 export const POST = frames(async (ctx) => {
   // Do something with the request data to generate transaction data
-  const contractAddress = ctx.url.pathname.split("/")[2] as `0x${string}`; // "f/[contractId]"
-  const tokenId = +ctx.url.pathname.split("/")[3];
+  const contractAddress = ctx.url.pathname.split("/")[3] as `0x${string}`; // "f/[contractId]"
+  const tokenId = +ctx.url.pathname.split("/")[4];
   const accountAddress = ctx.message?.connectedAddress as `0x${string}`;
-  const mintQuantity = +ctx.url.pathname.split("/")[5];
+  const mintQuantity = +ctx.url.pathname.split("/")[6];
   const { price, zoraFee } = await get1155MintDetails(contractAddress, tokenId);
 
   const calldata = encodeFunctionData({

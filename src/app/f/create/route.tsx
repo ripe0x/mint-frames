@@ -1,6 +1,6 @@
 /* eslint-disable react/jsx-key */
 import { Button } from "frames.js/next";
-import { frames } from "../[contractId]/frames";
+import { frames } from "../[chain]/[contractId]/frames";
 import { zoraERC1155Abi } from "@/abi/zoraERC1155Abi";
 import { publicClient } from "@/lib/viemClient";
 import { formatEther } from "viem";

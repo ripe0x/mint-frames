@@ -15,9 +15,9 @@ const handleRequest = frames(async (ctx) => {
   if (!ctx) {
     throw new Error("Invalid Frame");
   }
-  const contractAddress = ctx.url.pathname.split("/")[2] as `0x${string}`; // "f/[contractId]"
-  const tokenId = +ctx.url.pathname.split("/")[3]; // "f/[contractId]/[tokenId]"
-  const mintQuantity = +ctx.url.pathname.split("/")[5];
+  const contractAddress = ctx.url.pathname.split("/")[3] as `0x${string}`; // "f/[contractId]"
+  const tokenId = +ctx.url.pathname.split("/")[4]; // "f/[contractId]/[tokenId]"
+  const mintQuantity = +ctx.url.pathname.split("/")[6];
   const tokenURI = await publicClient.readContract({
     address: contractAddress,
     abi: zoraERC1155Abi,
