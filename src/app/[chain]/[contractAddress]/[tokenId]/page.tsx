@@ -26,6 +26,7 @@ export async function generateMetadata({ params }: Props) {
 }
 
 export default function Page({ params }: Props) {
+  console.log("params", params);
   return (
     <Zora1155TokenDetails
       contractAddress={params.contractAddress as `0x${string}`}

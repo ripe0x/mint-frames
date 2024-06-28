@@ -12,6 +12,7 @@ import {
   useWaitForTransactionReceipt,
   useAccount,
 } from "wagmi";
+import { chainIdFromChainLabel } from "@/lib/chainIdFromChainLabel";
 
 type Props = {
   contractAddress: `0x${string}`;
@@ -39,8 +40,8 @@ const MintZora1155 = (props: Props) => {
     abi: zoraERC1155Abi,
     functionName: "mintWithRewards",
     args: parameters?.data?.args,
-
     value: mintCosts.data?.totalCostEth,
+    chainId: chainIdFromChainLabel(props.chain),
   });
 
   const {
