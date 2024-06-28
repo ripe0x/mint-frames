@@ -50,26 +50,26 @@ const handleRequest = frames(async (ctx) => {
       Mint again 🔄
     </Button>
   );
-  const collectorClient = getCollectorClient(chain);
+  // const collectorClient = getCollectorClient(chain);
 
-  const mintCosts = await collectorClient.getMintCosts({
-    collection: contractAddress as `0x${string}`,
-    tokenId,
-    quantityMinted: BigInt(mintQuantity),
-    mintType: "1155",
-  });
+  // const mintCosts = await collectorClient.getMintCosts({
+  //   collection: contractAddress as `0x${string}`,
+  //   tokenId,
+  //   quantityMinted: BigInt(mintQuantity),
+  //   mintType: "1155",
+  // });
 
-  // if erc20 mint, skip approval step (already approved) and send user directly to mint
-  if (mintCosts.totalPurchaseCostCurrency) {
-    mintAgainButton = (
-      <Button
-        action="post"
-        target={`/${chain}/${contractAddress}/${tokenId}/mint/${mintQuantity}/mintWithErc20`}
-      >
-        Mint again 🔄
-      </Button>
-    );
-  }
+  // // if erc20 mint, skip approval step (already approved) and send user directly to mint
+  // if (mintCosts.totalPurchaseCostCurrency) {
+  //   mintAgainButton = (
+  //     <Button
+  //       action="post"
+  //       target={`/${chain}/${contractAddress}/${tokenId}/mint/${mintQuantity}/mintWithErc20`}
+  //     >
+  //       Mint again 🔄
+  //     </Button>
+  //   );
+  // }
 
   let buttons = [
     mintAgainButton,
