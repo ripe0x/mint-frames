@@ -1,7 +1,11 @@
 import { erc20Abi } from "viem";
-import { publicClient } from "./viemClient";
+import { getPublicClient } from "./viemClient";
 
-export const getErc20Details = async (contractAddress: `0x${string}`) => {
+export const getErc20Details = async (
+  contractAddress: `0x${string}`,
+  chain: string
+) => {
+  const publicClient = getPublicClient(chain);
   // get name and symbol of ERC20 token
   const name = await publicClient.readContract({
     address: contractAddress as `0x${string}`,

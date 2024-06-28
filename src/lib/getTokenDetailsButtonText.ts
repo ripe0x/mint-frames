@@ -5,10 +5,12 @@ import { truncAddr } from "./utilities";
 
 export const getTokenDetailsButtonText = async (
   contractAddress: string,
+  chain: string,
   tokenName: string
 ) => {
   const creatorDisplayName = await getTokenCreatorOwnerDisplayName(
-    contractAddress
+    contractAddress,
+    chain
   );
   let nftDetailsButtonText = `${tokenName} by ${creatorDisplayName}`;
 

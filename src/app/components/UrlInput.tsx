@@ -30,6 +30,7 @@ const UrlInput = (props: Props) => {
   const [frameStateRequestStatus, setFrameStateRequestStatus] = useState<
     "message" | "pending" | "done" | "doneRedirect" | "requestError" | undefined
   >();
+  const [chain, setChain] = React.useState("");
   const [contractAddress, setContractAddress] = React.useState("");
   const [tokenId, setTokenId] = React.useState("");
   const [url, setUrl] = React.useState("");
@@ -43,22 +44,21 @@ const UrlInput = (props: Props) => {
     const url = e.target.value;
     // const chainLabel = url.split("/")[4];
     const urlParts = url.split("/");
+    const chain = urlParts[4]?.split(":")[0] || "";
     const contractAddress = urlParts[4]?.split(":")[1] || "";
     const tokenId = urlParts[5] || "";
     if (!contractAddress || !tokenId) {
       setUrl("");
       setContractAddress("");
       setTokenId("");
+      setChain("");
       return;
     }
     setContractAddress(contractAddress);
     setTokenId(tokenId);
     setUrl(url);
+    setChain(chain);
   };
-  console.log(
-    "${props.baseUrl}/f/${contractAddress}/${tokenId}",
-    `${baseUrlPrefix}${props.baseUrl}/f/${contractAddress}/${tokenId}`
-  );
 
   return (
     <div>
@@ -110,7 +110,7 @@ const UrlInput = (props: Props) => {
                 {isValidUrl(url) ? (
                   <>
                     <FramePreview
-                      frameUrl={`${baseUrlPrefix}${props.baseUrl}/f/${contractAddress}/${tokenId}`}
+                      frameUrl={`${baseUrlPrefix}${props.baseUrl}/f/${chain}/${contractAddress}/${tokenId}`}
                       setFrameStateRequestStatus={setFrameStateRequestStatus}
                     />
                   </>
@@ -127,7 +127,7 @@ const UrlInput = (props: Props) => {
               frameStateRequestStatus === "done" && (
                 <div className="w-full max-w-[400px]">
                   <CopyLink
-                    url={`${baseUrlPrefix}${props.baseUrl}/f/${contractAddress}/${tokenId}`}
+                    url={`${baseUrlPrefix}${props.baseUrl}/${chain}/${contractAddress}/${tokenId}`}
                   />
                 </div>
               )}

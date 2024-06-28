@@ -17,8 +17,10 @@ import {
 import { zoraErc20MinterAbi } from "@/abi/zoraErc20MinterAbi";
 import { writeContract } from "viem/actions";
 import { publicClient } from "@/lib/viemClient";
+import { chainIdFromChainLabel } from "@/lib/chainIdFromChainLabel";
 
 export const POST = frames(async (ctx) => {
+  const chain = ctx.url.pathname.split("/")[2];
   const contractAddress = ctx.url.pathname.split("/")[3] as `0x${string}`; // "f/[contractId]"
   const tokenId = +ctx.url.pathname.split("/")[4];
   const accountAddress = ctx.message?.connectedAddress as `0x${string}`;
@@ -43,7 +45,7 @@ export const POST = frames(async (ctx) => {
 
   // Return transaction data that conforms to the correct type
   return transaction({
-    chainId: `eip155:${CHAIN_ID}`,
+    chainId: `eip155:${chainIdFromChainLabel(chain)}`,
     method: "eth_sendTransaction",
     params: {
       abi: parameters.abi,

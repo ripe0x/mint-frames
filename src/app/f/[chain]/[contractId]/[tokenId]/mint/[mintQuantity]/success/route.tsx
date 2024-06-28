@@ -9,12 +9,11 @@ import { getTokenCreatorOwnerDisplayName } from "@/lib/getTokenCreatorOwnerDispl
 import { getFcUsernameFromAddress } from "@/lib/getFcUsernameFromAddress";
 import { getContractOwner } from "@/lib/getContractOwner";
 
-// this is for 1155 contracts
 const handleRequest = frames(async (ctx) => {
-  // if (!ctx.message || !ctx.message.state) {
   if (!ctx) {
     throw new Error("Invalid Frame");
   }
+  const chain = ctx.url.pathname.split("/")[2]; // "f/[chain]"
   const contractAddress = ctx.url.pathname.split("/")[3] as `0x${string}`; // "f/[contractId]"
   const tokenId = +ctx.url.pathname.split("/")[4]; // "f/[contractId]/[tokenId]"
   const mintQuantity = +ctx.url.pathname.split("/")[6];
@@ -38,30 +37,18 @@ const handleRequest = frames(async (ctx) => {
     "https://drops.infura-ipfs.io/ipfs/"
   );
 
-  // const creatorFcUsername = await getFcUsernameFromAddress(
-  //   await getContractOwner(contractAddress)
-  // );
-  // const castText = `Mint ${metadataJson.name} by ${
-  //   creatorFcUsername
-  //     ? `@${creatorFcUsername}`
-  //     : await getTokenCreatorOwnerDisplayName(contractAddress)
-  // } with the drops.wtf frame \n\n${frameUrl(
-  //   ctx.url.origin,
-  //   contractAddress,
-  //   tokenId
-  // )}
-  // `;
   const castText = `Mint ${
     metadataJson.name
   } with the drops.wtf frame \n\n${frameUrl(
     ctx.url.origin,
     contractAddress,
+    chain,
     tokenId
   )}
   `;
 
   let mintAgainButton = (
-    <Button action="post" target={`/${contractAddress}/${tokenId}`}>
+    <Button action="post" target={`/${chain}/${contractAddress}/${tokenId}`}>
       Mint again 🔄
     </Button>
   );
@@ -78,7 +65,7 @@ const handleRequest = frames(async (ctx) => {
     mintAgainButton = (
       <Button
         action="post"
-        target={`/${contractAddress}/${tokenId}/mint/${mintQuantity}/mintWithErc20`}
+        target={`/${chain}/${contractAddress}/${tokenId}/mint/${mintQuantity}/mintWithErc20`}
       >
         Mint again 🔄
       </Button>
@@ -87,7 +74,10 @@ const handleRequest = frames(async (ctx) => {
 
   let buttons = [
     mintAgainButton,
-    <Button action="link" target={zoraMintPageUrl(contractAddress, tokenId)}>
+    <Button
+      action="link"
+      target={zoraMintPageUrl(contractAddress, chain, tokenId)}
+    >
       View on Zora
     </Button>,
     <Button action="link" target={postCastUrl(castText)}>

@@ -2,10 +2,10 @@
 import { Button } from "frames.js/next";
 import { frames } from "../frames";
 import { zoraERC1155Abi } from "@/abi/zoraERC1155Abi";
-import { publicClient } from "@/lib/viemClient";
+import { getPublicClient } from "@/lib/viemClient";
 import { formatEther } from "viem";
 import { get1155MintDetails } from "@/lib/get1155MintDetails";
-import { collectorClient } from "@/lib/zoraClient";
+import { getCollectorClient } from "@/lib/zoraClient";
 import { getIsErc20Approved } from "@/lib/getIsErc20Approved";
 import { getAccountTokenBalance } from "@/lib/getAccountTokenBalance";
 import { getErc20Details } from "@/lib/getErc20Details";
@@ -21,10 +21,13 @@ const handleRequest = frames(async (ctx) => {
   let isERC20Approved = false;
   let isERC20BalanceAvailable = false;
   let erc20Symbol;
+
   const accountAddress = ctx.message?.connectedAddress as `0x${string}`;
-  const contractAddress = ctx.url.pathname.split("/")[3] as `0x${string}`; // "f/[contractId]"
-  const tokenId = +ctx.url.pathname.split("/")[4]; // "f/[contractId]/[tokenId]"
-  const { price, zoraFee } = await get1155MintDetails(contractAddress, tokenId);
+  const chain = ctx.url.pathname.split("/")[2] as `0x${string}`; // "f/[chain]"
+  const contractAddress = ctx.url.pathname.split("/")[3] as `0x${string}`; // "f/[chain]/[contractId]"
+  const tokenId = +ctx.url.pathname.split("/")[4]; // "f/[chain]/[contractId]/[tokenId]"
+
+  const publicClient = getPublicClient(chain);
   const tokenURI = await publicClient.readContract({
     address: contractAddress,
     abi: zoraERC1155Abi,
@@ -39,42 +42,50 @@ const handleRequest = frames(async (ctx) => {
   // fetch token metadata
   const metadata = await fetch(tokenUriUrl);
   const metadataJson = await metadata.json();
-  console.log("metadataJson", metadataJson);
   const image = metadataJson.image.replace(
     "ipfs://",
     "https://drops.infura-ipfs.io/ipfs/"
   );
-  let mint1ButtonText = `Mint 1 for ${formatEther(
-    BigInt(1) * (price + zoraFee)
-  )} ETH`;
-  let mint3ButtonText = `Mint 3 for ${formatEther(
-    BigInt(3) * (price + zoraFee)
-  )} ETH`;
 
+  const collectorClient = getCollectorClient(chain);
   const mintCosts = await collectorClient.getMintCosts({
     collection: contractAddress,
     tokenId,
     quantityMinted: 1,
     mintType: "1155",
   });
+  // let mint1ButtonText = `Mint 1 for ${formatEther(
+  //   BigInt(1) * (price + zoraFee)
+  // )} ETH`;
+  let mint1ButtonText = `Mint 1 for ${formatEther(mintCosts.totalCostEth)} ETH`;
+  // let mint3ButtonText = `Mint 3 for ${formatEther(
+  //   BigInt(3) * (price + zoraFee)
+  // )} ETH`;
 
   if (mintCosts.totalPurchaseCostCurrency) {
     isERC20Mint = true;
     const { symbol } = await getErc20Details(
-      mintCosts.totalPurchaseCostCurrency
+      mintCosts.totalPurchaseCostCurrency,
+      chain
     );
-    console.log("symbol", symbol);
     erc20Symbol = symbol;
   }
 
   let buttons = [
-    <Button action="link" target={zoraMintPageUrl(contractAddress, tokenId)}>
-      {await getTokenDetailsButtonText(contractAddress, metadataJson.name)}
+    <Button
+      action="link"
+      target={zoraMintPageUrl(contractAddress, chain, tokenId)}
+    >
+      {await getTokenDetailsButtonText(
+        contractAddress,
+        chain,
+        metadataJson.name
+      )}
     </Button>,
     <Button
       action="tx"
-      target={`/${contractAddress}/${tokenId}/mint/1/txdata`}
-      post_url={`/${contractAddress}/${tokenId}/mint/1/success`}
+      target={`/${chain}/${contractAddress}/${tokenId}/mint/1/txdata`}
+      post_url={`/${chain}/${contractAddress}/${tokenId}/mint/1/success`}
     >
       {mint1ButtonText}
     </Button>,
@@ -84,12 +95,19 @@ const handleRequest = frames(async (ctx) => {
     mint1ButtonText = `Approve ${formatEther(
       mintCosts.totalPurchaseCost
     )} $${erc20Symbol} to mint 1`;
-    mint3ButtonText = `Approve ${formatEther(
-      BigInt(3) * mintCosts.totalPurchaseCost
-    )} $${erc20Symbol} to mint 3`;
+    // mint3ButtonText = `Approve ${formatEther(
+    //   BigInt(3) * mintCosts.totalPurchaseCost
+    // )} $${erc20Symbol} to mint 3`;
     buttons = [
-      <Button action="link" target={zoraMintPageUrl(contractAddress, tokenId)}>
-        {await getTokenDetailsButtonText(contractAddress, metadataJson.name)}
+      <Button
+        action="link"
+        target={zoraMintPageUrl(contractAddress, chain, tokenId)}
+      >
+        {await getTokenDetailsButtonText(
+          contractAddress,
+          chain,
+          metadataJson.name
+        )}
       </Button>,
       <Button
         action="tx"
@@ -100,9 +118,9 @@ const handleRequest = frames(async (ctx) => {
             mintQuantity: 1,
             tokenId: tokenId,
           },
-          pathname: `/${contractAddress}/${tokenId}/mint/1/approveErc20`,
+          pathname: `/${chain}/${contractAddress}/${tokenId}/mint/1/approveErc20`,
         }}
-        post_url={`/${contractAddress}/${tokenId}/mint/1/mintWithErc20`}
+        post_url={`/${chain}/${contractAddress}/${tokenId}/mint/1/mintWithErc20`}
       >
         {mint1ButtonText}
       </Button>,

@@ -3,10 +3,11 @@
 import { http, createStorage, cookieStorage } from "wagmi";
 import { baseSepolia, base } from "wagmi/chains";
 import { Chain, getDefaultConfig } from "@rainbow-me/rainbowkit";
+import { zora, mainnet } from "viem/chains";
 
 const projectId = process.env.NEXT_PUBLIC_BASE_WALLETCONNECT_ID || "";
 
-const supportedChains: Chain[] = [base, baseSepolia];
+const supportedChains: Chain[] = [base, zora, mainnet];
 
 export const config = getDefaultConfig({
   appName: "WalletConnection",

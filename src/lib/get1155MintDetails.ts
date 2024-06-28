@@ -1,4 +1,4 @@
-import { publicClient } from "@/lib/viemClient";
+import { getPublicClient } from "@/lib/viemClient";
 import { ZORA_CONTRACT_FIXED_PRICE_SALE_STRATEGY } from "@/constants";
 import { zoraFixedPriceSaleStrategyAbi } from "@/abi/zoraFixedPriceSaleStrategy";
 import { getIsSaleActive } from "./getIsSaleActive";
@@ -6,8 +6,10 @@ import { zoraERC1155Abi } from "@/abi/zoraERC1155Abi";
 
 export const get1155MintDetails = async (
   contractAddress: string,
-  tokenId: number
+  tokenId: number,
+  chain: string
 ) => {
+  const publicClient = getPublicClient(chain);
   const zoraFee = await publicClient.readContract({
     address: contractAddress as `0x${string}`,
     abi: zoraERC1155Abi,
@@ -25,7 +27,6 @@ export const get1155MintDetails = async (
     saleDetails.saleStart,
     saleDetails.saleEnd
   );
-  console.log("isActive", isActive);
 
   return {
     price,

@@ -10,9 +10,14 @@ import { collectorClient } from "@/lib/zoraClient";
 // this is for 1155 contracts
 const handleRequest = frames(async (ctx) => {
   let isERC20Mint = false;
+  const chain = ctx.url.pathname.split("/")[2]; // "f/[chain]"
   const contractAddress = ctx.url.pathname.split("/")[2] as `0x${string}`; // "f/[contractId]"
   const tokenId = +ctx.url.pathname.split("/")[3]; // "f/[contractId]/[tokenId]"
-  const { price, zoraFee } = await get1155MintDetails(contractAddress, tokenId);
+  const { price, zoraFee } = await get1155MintDetails(
+    contractAddress,
+    tokenId,
+    chain
+  );
   const tokenURI = await publicClient.readContract({
     address: contractAddress,
     abi: zoraERC1155Abi,
@@ -51,7 +56,6 @@ const handleRequest = frames(async (ctx) => {
   if (mintCosts.totalPurchaseCostCurrency) {
     isERC20Mint = true;
   }
-  // console.log("isERC20Mint", isERC20Mint);
 
   let buttons = [
     <Button
@@ -68,13 +72,6 @@ const handleRequest = frames(async (ctx) => {
     >
       {mint3ButtonText}
     </Button>,
-    // <Button
-    //   action="tx"
-    //   target={`/${contractAddress}/${tokenId}/mint/11/txdata`}
-    //   post_url={`/${contractAddress}/${tokenId}/mint/11/success`}
-    // >
-    //   {mint11ButtonText}
-    // </Button>,
   ];
 
   if (isERC20Mint) {

@@ -46,13 +46,7 @@ const FramePreview = (props: Props) => {
     connectedAddress: undefined,
     frameGetProxy: "/frames",
     frameContext: fallbackFrameContext,
-    // frameContext: {
-    //   address: "0x",
-    //   castId: {
-    //     hash: "0x",
-    //     fid: 0,
-    //   },
-    // },
+
     signerState: {
       hasSigner: farcasterSigner !== undefined,
       signer: farcasterSigner,
@@ -64,7 +58,6 @@ const FramePreview = (props: Props) => {
       signFrameAction: signFrameAction,
     },
   });
-  console.log("frameState", frameState);
   useEffect(() => {
     if (frameState.currentFrameStackItem?.status) {
       props.setFrameStateRequestStatus(frameState.currentFrameStackItem.status);

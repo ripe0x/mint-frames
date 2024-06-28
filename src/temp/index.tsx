@@ -9,12 +9,10 @@ export default function Page() {
   useEffect(() => {
     setIsMounted(true);
   }, []);
-  console.log("isMounted", isMounted);
   const origin =
     typeof window !== "undefined" && window.location.origin
       ? window.location.origin
       : "";
-  console.log("origin", origin);
 
   return (
     <div className={inter.className}>

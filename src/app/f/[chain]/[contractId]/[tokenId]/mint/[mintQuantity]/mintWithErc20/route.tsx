@@ -9,6 +9,7 @@ import { getErc20Details } from "@/lib/getErc20Details";
 
 // used to mint 1155 tokens after approval
 const handleRequest = frames(async (ctx) => {
+  const chain = ctx.url.pathname.split("/")[2]; // "f/[chain]"
   const contractAddress = ctx.url.pathname.split("/")[3] as `0x${string}`; // "f/[contractId]"
   const tokenId = +ctx.url.pathname.split("/")[4]; // "f/[contractId]/[tokenId]"
   const mintQuantity = +ctx.url.pathname.split("/")[6];
@@ -39,7 +40,8 @@ const handleRequest = frames(async (ctx) => {
   });
 
   const { symbol } = await getErc20Details(
-    mintCosts.totalPurchaseCostCurrency as `0x${string}`
+    mintCosts.totalPurchaseCostCurrency as `0x${string}`,
+    chain
   );
   let mintButtonText = `Mint ${mintQuantity} for ${formatEther(
     BigInt(mintCosts.totalPurchaseCost)
@@ -55,9 +57,9 @@ const handleRequest = frames(async (ctx) => {
           mintQuantity: mintQuantity,
           tokenId: tokenId,
         },
-        pathname: `/${contractAddress}/${tokenId}/mint/${mintQuantity}/erc20Txdata`,
+        pathname: `/${chain}/${contractAddress}/${tokenId}/mint/${mintQuantity}/erc20Txdata`,
       }}
-      post_url={`/${contractAddress}/${tokenId}/mint/${mintQuantity}/success`}
+      post_url={`/${chain}/${contractAddress}/${tokenId}/mint/${mintQuantity}/success`}
     >
       {mintButtonText}
     </Button>,
