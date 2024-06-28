@@ -4,7 +4,7 @@ import { frames } from "../../../../frames";
 import { zoraERC1155Abi } from "@/abi/zoraERC1155Abi";
 import { getPublicClient } from "@/lib/viemClient";
 import { frameUrl, postCastUrl, zoraMintPageUrl } from "@/lib/utilities";
-import { collectorClient } from "@/lib/zoraClient";
+import { getCollectorClient } from "@/lib/zoraClient";
 
 const handleRequest = frames(async (ctx) => {
   if (!ctx) {
@@ -50,6 +50,7 @@ const handleRequest = frames(async (ctx) => {
       Mint again 🔄
     </Button>
   );
+  const collectorClient = getCollectorClient(chain);
 
   const mintCosts = await collectorClient.getMintCosts({
     collection: contractAddress as `0x${string}`,
