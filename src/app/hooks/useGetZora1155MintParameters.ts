@@ -1,5 +1,4 @@
-import { collectorClient } from "@/lib/zoraClient";
-import { MintCosts } from "@zoralabs/protocol-sdk";
+import { getCollectorClient } from "@/lib/zoraClient";
 import { useEffect, useState } from "react";
 import { SimulateContractParameters } from "viem";
 import { Account } from "viem/accounts";
@@ -17,12 +16,14 @@ type ZoraMintParameters = SimulateContractParameters<
 export const useGetZora1155MintParameters = (
   contractAddress: `0x${string}`,
   tokenId: number,
-  mintQuantity: number
+  mintQuantity: number,
+  chain: string
 ) => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<true | false>(false);
   const [data, setData] = useState<ZoraMintParameters>();
   const account = useAccount();
+  const collectorClient = getCollectorClient(chain);
   const getData = async () => {
     const { parameters } = await collectorClient
       .mint({

@@ -11,6 +11,8 @@ import {
   useSimulateContract,
   useWaitForTransactionReceipt,
   useAccount,
+  useConfig,
+  useSwitchChain,
 } from "wagmi";
 import { chainIdFromChainLabel } from "@/lib/chainIdFromChainLabel";
 
@@ -27,12 +29,14 @@ const MintZora1155 = (props: Props) => {
   const mintCosts = useGetZora1155MintCosts(
     props.contractAddress,
     props.tokenId,
-    props.mintQuantity
+    props.mintQuantity,
+    props.chain
   );
   const parameters = useGetZora1155MintParameters(
     props.contractAddress,
     props.tokenId,
-    props.mintQuantity
+    props.mintQuantity,
+    props.chain
   );
 
   const { data, error, isLoading } = useSimulateContract({
@@ -55,6 +59,8 @@ const MintZora1155 = (props: Props) => {
     useWaitForTransactionReceipt({
       hash,
     });
+
+  const { switchChain } = useSwitchChain();
 
   return (
     <div>
@@ -122,21 +128,34 @@ const MintZora1155 = (props: Props) => {
         </div>
 
         <p className="text-[12px] opacity-60 mt-1 italic"></p>
+
         {account.address ? (
           <>
-            <button
-              disabled={!Boolean(data?.request)}
-              onClick={() => writeContract(data!.request)}
-              className="uppercase tracking-widest text-[14px] font-bold border border-slate-600 hover:border-slate-200 p-2 px-3 rounded-md my-2 disabled:opacity-15"
-            >
-              {isPending && "Confirming..."}
-              {isLoading && "Loading..."}
-              {isConfirming && "Waiting for confirmation..."}
-              {!isPending &&
-                !isLoading &&
-                !isConfirming &&
-                `Mint ${mintQuantity} `}
-            </button>
+            {account.chainId === chainIdFromChainLabel(props.chain) ? (
+              <button
+                disabled={!Boolean(data?.request)}
+                onClick={() => writeContract(data!.request)}
+                className="uppercase tracking-widest text-[14px] font-bold border border-slate-600 hover:border-slate-200 p-2 px-3 rounded-md my-2 disabled:opacity-15"
+              >
+                {isPending && "Confirming..."}
+                {isLoading && "Loading..."}
+                {isConfirming && "Waiting for confirmation..."}
+                {!isPending &&
+                  !isLoading &&
+                  !isConfirming &&
+                  `Mint ${mintQuantity} `}
+              </button>
+            ) : (
+              <button
+                disabled={!Boolean(data?.request)}
+                onClick={() =>
+                  switchChain({ chainId: chainIdFromChainLabel(props.chain) })
+                }
+                className="uppercase tracking-widest text-[14px] font-bold border border-slate-600 hover:border-slate-200 p-2 px-3 rounded-md my-2 disabled:opacity-15"
+              >
+                Change network
+              </button>
+            )}
 
             {isConfirmed && hash && (
               <p className="text-xs mb-4">
