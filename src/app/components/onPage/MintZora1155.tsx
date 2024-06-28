@@ -35,6 +35,7 @@ const MintZora1155 = (props: Props) => {
     props.tokenId,
     props.mintQuantity
   );
+  console.log("mintCosts", mintCosts);
   const parameters = useGetZora1155MintParameters(
     props.contractAddress,
     props.tokenId,
@@ -55,12 +56,7 @@ const MintZora1155 = (props: Props) => {
     abi: zoraERC1155Abi,
     functionName: "mintWithRewards",
     args: parameters?.data?.args,
-    // args: [
-    //   minterAddress as `0x${string}`,
-    //   BigInt(mintQuantity),
-    //   "",
-    //   process.env.NEXT_PUBLIC_ZORA_MINT_REFERRAL_ADDRESS as `0x${string}`,
-    // ],
+
     value: mintCosts.data?.totalCostEth,
   });
   console.log(data);
@@ -79,20 +75,19 @@ const MintZora1155 = (props: Props) => {
 
   return (
     <div>
-      Mint {mintCosts.loading}
       <div>
-        <p className="text-xs opacity-75">
+        {/* <p className="text-xs opacity-75">
           {mintCosts && (
             <>
-              Current Edition mint price:{" "}
               <strong>
-                {/* {result?.data?.[0].result &&
-                formatEther(result?.data?.[0].result?.publicSalePrice)}{" "} */}
+                {(mintCosts.data?.totalPurchaseCost &&
+                  formatEther(BigInt(mintCosts.data?.totalPurchaseCost))) ||
+                  "0"}{" "}
                 ETH
               </strong>
             </>
           )}
-        </p>
+        </p> */}
 
         <div className="relative flex items-center max-w-[8rem] my-4 mx-auto xl:mx-0">
           <button
@@ -160,7 +155,7 @@ const MintZora1155 = (props: Props) => {
         {account.address ? (
           <>
             <button
-              disabled={!Boolean(data?.request)}
+              // disabled={!Boolean(data?.request)}
               onClick={() => writeContract(data!.request)}
               className="uppercase tracking-widest text-[14px] font-bold border border-slate-600 hover:border-slate-200 p-2 px-3 rounded-md my-2 disabled:opacity-15"
             >
@@ -194,7 +189,12 @@ const MintZora1155 = (props: Props) => {
             </div>
           </>
         )}
-        <p className="text-sm my-4">Total cost: {formatEther(txValue)} ETH</p>
+        <p className="text-sm my-4">
+          Total cost:{" "}
+          {mintCosts.data?.totalCostEth &&
+            formatEther(mintCosts.data?.totalCostEth)}{" "}
+          ETH
+        </p>
         <p className="text-[12px] opacity-60 mt-1 italic ">
           <a
             href="https://support.zora.co/en/articles/1368641"
@@ -204,8 +204,10 @@ const MintZora1155 = (props: Props) => {
           >
             includes Zora protocol fee
           </a>{" "}
-          of {zoraFee && formatEther(BigInt(zoraFee))} ETH{" "}
-          {mintQuantity > 1 && `(0.000777 ETH per token)`}
+          of{" "}
+          {mintCosts.data?.mintFee &&
+            formatEther(BigInt(mintCosts.data?.mintFee))}{" "}
+          ETH {mintQuantity > 1 && `(0.000777 ETH per token)`}
         </p>
       </div>
     </div>
