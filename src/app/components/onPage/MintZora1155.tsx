@@ -2,11 +2,8 @@
 import { zoraERC1155Abi } from "@/abi/zoraERC1155Abi";
 import { useGetZora1155MintCosts } from "@/app/hooks/useGetZora1155MintCosts";
 import { useGetZora1155MintParameters } from "@/app/hooks/useGetZora1155MintParameters";
-import { collectorClient } from "@/lib/zoraClient";
-import { hash } from "crypto";
 import React, { useState } from "react";
 import { formatEther } from "viem";
-import { writeContract } from "viem/actions";
 import { ConnectButton } from "@rainbow-me/rainbowkit";
 import {
   useReadContracts,
@@ -25,31 +22,17 @@ type Props = {
 
 const MintZora1155 = (props: Props) => {
   const [mintQuantity, setMintQuantity] = useState(1);
-  const [ethPrice, setEthPrice] = useState(0);
-  const [txValue, setTxValue] = useState(BigInt(0));
-  const [price, setPrice] = useState(0);
-  const [zoraFee, setZoraFee] = useState(0);
   const account = useAccount();
   const mintCosts = useGetZora1155MintCosts(
     props.contractAddress,
     props.tokenId,
     props.mintQuantity
   );
-  console.log("mintCosts", mintCosts);
   const parameters = useGetZora1155MintParameters(
     props.contractAddress,
     props.tokenId,
     props.mintQuantity
   );
-  console.log(parameters);
-  // const { parameters } = await collectorClient.mint({
-  //   // collection address to mint
-  //   tokenContract: props.contractAddress,
-  //   // quantity of tokens to mint
-  //   quantityToMint: props.tokenId,
-  //   // can be set to 1155, 721, or premint
-  //   mintType: "1155",
-  // });
 
   const { data, error, isLoading } = useSimulateContract({
     address: props.contractAddress,
@@ -59,7 +42,6 @@ const MintZora1155 = (props: Props) => {
 
     value: mintCosts.data?.totalCostEth,
   });
-  console.log(data);
 
   const {
     data: hash,
@@ -76,19 +58,6 @@ const MintZora1155 = (props: Props) => {
   return (
     <div>
       <div>
-        {/* <p className="text-xs opacity-75">
-          {mintCosts && (
-            <>
-              <strong>
-                {(mintCosts.data?.totalPurchaseCost &&
-                  formatEther(BigInt(mintCosts.data?.totalPurchaseCost))) ||
-                  "0"}{" "}
-                ETH
-              </strong>
-            </>
-          )}
-        </p> */}
-
         <div className="relative flex items-center max-w-[8rem] my-4 mx-auto xl:mx-0">
           <button
             type="button"
@@ -155,7 +124,7 @@ const MintZora1155 = (props: Props) => {
         {account.address ? (
           <>
             <button
-              // disabled={!Boolean(data?.request)}
+              disabled={!Boolean(data?.request)}
               onClick={() => writeContract(data!.request)}
               className="uppercase tracking-widest text-[14px] font-bold border border-slate-600 hover:border-slate-200 p-2 px-3 rounded-md my-2 disabled:opacity-15"
             >

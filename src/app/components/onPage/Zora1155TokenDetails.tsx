@@ -26,7 +26,6 @@ const Zora1155TokenDetails = (props: Props) => {
   const fetchMetadata = async (tokenUriUrl: string) => {
     const metadata = await fetch(tokenUriUrl);
     const metadataJson = await metadata.json();
-    console.log("metadataJson", metadataJson);
     const artworkUrl = metadataJson.image.replace(
       "ipfs://",
       "https://drops.infura-ipfs.io/ipfs/"
@@ -46,11 +45,6 @@ const Zora1155TokenDetails = (props: Props) => {
   return (
     <div className="bg-black flex flex-col gap-10 p-4 justify-center xl:items-center xl:flex-row text-center xl:text-left ">
       <div className="xl:w-1/2">
-        {/* <Zora1155TokenDetails
-        contractAddress={params.contractAddress as `0x${string}`}
-        tokenId={+params.tokenId}
-        chain={params.chain}
-      /> */}
         {tokenArtUrl && (
           <img
             src={tokenArtUrl}
@@ -61,16 +55,7 @@ const Zora1155TokenDetails = (props: Props) => {
       <div className="xl:w-1/2">
         <h2 className="text-lg my-4 xl:text-2xl">{tokenName}</h2>
         <p className="text-xs opacity-75">{tokenDescription}</p>
-        {/* <p className="text-xs mt-1">
-          <a
-            href="https://x.com/ripe0x/status/1796271930623836204"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="opacity-75 hover:opacity-100 underline hover:no-underline"
-          >
-            Learn more
-          </a>
-        </p> */}
+
         <div className="mt-4">
           <MintZora1155
             contractAddress={props.contractAddress as `0x${string}`}

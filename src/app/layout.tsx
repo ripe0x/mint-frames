@@ -1,8 +1,11 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
+// import "react-loading-skeleton/dist/skeleton.css";
+import "@rainbow-me/rainbowkit/styles.css";
 import { headers } from "next/headers";
 import Providers from "./providers";
+import GlobalHeader from "./components/Navigation/GlobalHeader";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -20,7 +23,10 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={inter.className}>
-        <Providers cookie={cookie}>{children}</Providers>
+        <Providers cookie={cookie}>
+          <GlobalHeader />
+          {children}
+        </Providers>
       </body>
     </html>
   );
