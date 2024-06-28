@@ -2,12 +2,9 @@
 import { Button } from "frames.js/next";
 import { frames } from "../../../../frames";
 import { zoraERC1155Abi } from "@/abi/zoraERC1155Abi";
-import { publicClient } from "@/lib/viemClient";
+import { getPublicClient } from "@/lib/viemClient";
 import { frameUrl, postCastUrl, zoraMintPageUrl } from "@/lib/utilities";
 import { collectorClient } from "@/lib/zoraClient";
-import { getTokenCreatorOwnerDisplayName } from "@/lib/getTokenCreatorOwnerDisplayName";
-import { getFcUsernameFromAddress } from "@/lib/getFcUsernameFromAddress";
-import { getContractOwner } from "@/lib/getContractOwner";
 
 const handleRequest = frames(async (ctx) => {
   if (!ctx) {
@@ -17,6 +14,7 @@ const handleRequest = frames(async (ctx) => {
   const contractAddress = ctx.url.pathname.split("/")[3] as `0x${string}`; // "f/[contractId]"
   const tokenId = +ctx.url.pathname.split("/")[4]; // "f/[contractId]/[tokenId]"
   const mintQuantity = +ctx.url.pathname.split("/")[6];
+  const publicClient = getPublicClient(chain);
   const tokenURI = await publicClient.readContract({
     address: contractAddress,
     abi: zoraERC1155Abi,

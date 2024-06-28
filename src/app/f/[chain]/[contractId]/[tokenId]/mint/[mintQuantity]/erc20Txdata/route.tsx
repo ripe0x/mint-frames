@@ -1,22 +1,9 @@
-import {
-  Abi,
-  encodeAbiParameters,
-  encodeFunctionData,
-  parseAbiParameters,
-} from "viem";
+import { encodeFunctionData } from "viem";
 import { frames } from "../../../../frames";
 import { transaction } from "frames.js/core";
-import { collectorClient } from "@/lib/zoraClient";
-import { get1155MintDetails } from "@/lib/get1155MintDetails";
-import { zoraERC1155Abi } from "@/abi/zoraERC1155Abi";
-import {
-  CHAIN_ID,
-  ZORA_CONTRACT_ERC20_MINTER_ADDRESS,
-  ZORA_CONTRACT_FIXED_PRICE_SALE_STRATEGY,
-} from "@/constants";
+import { getCollectorClient } from "@/lib/zoraClient";
+import { ZORA_CONTRACT_ERC20_MINTER_ADDRESS } from "@/constants";
 import { zoraErc20MinterAbi } from "@/abi/zoraErc20MinterAbi";
-import { writeContract } from "viem/actions";
-import { publicClient } from "@/lib/viemClient";
 import { chainIdFromChainLabel } from "@/lib/chainIdFromChainLabel";
 
 export const POST = frames(async (ctx) => {
@@ -25,7 +12,7 @@ export const POST = frames(async (ctx) => {
   const tokenId = +ctx.url.pathname.split("/")[4];
   const accountAddress = ctx.message?.connectedAddress as `0x${string}`;
   const mintQuantity = +ctx.url.pathname.split("/")[6];
-
+  const collectorClient = getCollectorClient(chain);
   const { parameters } = await collectorClient.mint({
     tokenContract: contractAddress,
     mintType: "1155",

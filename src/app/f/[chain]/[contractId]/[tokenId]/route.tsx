@@ -142,10 +142,24 @@ const handleRequest = frames(async (ctx) => {
     ];
   }
 
+  // check if image is a .gif
+  // const isGif = image.endsWith(".gif");
+  // const isGif = false;
+  // const displayImage = isGif ? (
+  //   image
+  // ) : (
+  //   <div tw="flex w-full h-full bg-black justify-center items-center">
+  //     <img src={image} tw="max-w-[280px]" />
+  //   </div>
+  // );
+  // console.log("displayImage", displayImage);
+
   return {
     image: image,
     imageOptions: {
       aspectRatio: "1:1",
+      // width: 300,
+      // height: 300,
     },
     buttons: buttons,
   };

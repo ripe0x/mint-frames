@@ -9,7 +9,6 @@ export const POST = frames(async (ctx) => {
   const tokenContractAddress = ctx.searchParams.erc20TokenAddress;
   const totalPurchaseCost = ctx.searchParams.totalPurchaseCost;
   const spenderAddress = ZORA_CONTRACT_ERC20_MINTER_ADDRESS as `0x${string}`;
-  const mintQuantity = ctx.searchParams.mintQuantity;
 
   const calldata = encodeFunctionData({
     abi: erc20Abi,
