@@ -87,16 +87,16 @@ const handleRequest = frames(async (ctx) => {
   const imageText = `Minted ${mintQuantity} ${metadataJson.name}`;
 
   return {
-    // image: (
-    //   <div tw="flex w-full h-full bg-black">
-    //     <div tw="bg-transparent text-white w-full h-full justify-center items-center flex text-center flex-col text-[18px] font-bold">
-    //       <img src={image} tw="absolute opacity-35" />
-    //       <span tw="font-bold mb-4 px-10">Success!</span>
-    //       <span>{imageText}</span>
-    //     </div>
-    //   </div>
-    // ),
-    image: image,
+    image: (
+      <div tw="flex w-full h-full bg-black">
+        <div tw="bg-transparent text-white w-full h-full justify-center items-center flex text-center flex-col text-[18px] font-bold">
+          <img src={image} tw="absolute opacity-35" />
+          <span tw="font-bold mb-4 px-10">Success!</span>
+          <span>{imageText}</span>
+        </div>
+      </div>
+    ),
+    // image: image,
     imageOptions: {
       aspectRatio: "1:1",
       width: 300,
