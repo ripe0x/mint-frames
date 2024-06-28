@@ -16,7 +16,7 @@ export async function generateMetadata({ params }: Props) {
       ...(await fetchMetadata(
         new URL(
           `/f/${params.chain}/${params.contractAddress}/${params.tokenId}`,
-          process.env.VERCEL_URL
+          process.env.NEXT_PUBLIC_NETLIFY_URL
             ? `https://${process.env.NEXT_PUBLIC_NETLIFY_URL}`
             : "http://localhost:3000"
         )
@@ -26,15 +26,6 @@ export async function generateMetadata({ params }: Props) {
 }
 
 export default function Page({ params }: Props) {
-  console.log(
-    "params",
-    new URL(
-      `/f/${params.chain}/${params.contractAddress}/${params.tokenId}`,
-      process.env.NEXT_PUBLIC_NETLIFY_URL
-        ? `https://${process.env.NEXT_PUBLIC_NETLIFY_URL}`
-        : "http://localhost:3000"
-    )
-  );
   return (
     <Zora1155TokenDetails
       contractAddress={params.contractAddress as `0x${string}`}
