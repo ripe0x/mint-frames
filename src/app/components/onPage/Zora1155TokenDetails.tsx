@@ -13,7 +13,6 @@ type Props = {
 };
 
 const Zora1155TokenDetails = (props: Props) => {
-  console.log("props", props);
   const [tokenArtUrl, setTokenArtUrl] = React.useState<string | null>(null);
   const [tokenName, setTokenName] = React.useState<string | null>(null);
   const [tokenDescription, setTokenDescription] = React.useState<string | null>(
@@ -53,8 +52,6 @@ const Zora1155TokenDetails = (props: Props) => {
     );
     if (tokenUriUrl) fetchMetadata(tokenUriUrl);
   }, [result.data]);
-  console.log("result", result?.data);
-  console.log("result", tokenArtUrl, tokenName, tokenDescription);
 
   return (
     <div className="bg-black flex flex-col gap-10 p-4 justify-center xl:items-center xl:flex-row text-center xl:text-left ">

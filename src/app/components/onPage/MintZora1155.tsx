@@ -6,12 +6,10 @@ import React, { useState } from "react";
 import { formatEther } from "viem";
 import { ConnectButton } from "@rainbow-me/rainbowkit";
 import {
-  useReadContracts,
   useWriteContract,
   useSimulateContract,
   useWaitForTransactionReceipt,
   useAccount,
-  useConfig,
   useSwitchChain,
 } from "wagmi";
 import { chainIdFromChainLabel } from "@/lib/chainIdFromChainLabel";
@@ -100,6 +98,7 @@ const MintZora1155 = (props: Props) => {
             aria-describedby="helper-text-explanation"
             className="bg-black hover:bg-gray-600  border text-sm block w-full py-2.5  border-gray-600 placeholder-gray-400 ext-white focus:ring-blue-500 focus:border-blue-500 h-11 text-center"
             value={mintQuantity}
+            onChange={(e) => console.log("mintQuantity", mintQuantity)}
             required
           />
           <button

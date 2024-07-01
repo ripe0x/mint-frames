@@ -7,8 +7,7 @@ export const SUPPORTED_ZORA_1155_CONTRACT_VERSIONS = ["2.7.0"];
 export const SUPPORTED_ZORA_721_CONTRACT_VERSIONS = ["13"];
 export const ZORA_CONTRACT_FIXED_PRICE_SALE_STRATEGY = isProd
   ? "0x04E2516A2c207E84a1839755675dfd8eF6302F0a" // base mainnet https://github.com/ourzora/zora-protocol/blob/main/packages/1155-deployments/addresses/8453.json
-  : // : "0xd34872BE0cdb6b09d45FCa067B07f04a1A9aE1aE"; // base sepolia
-    "0x6d28164C3CE04A190D5F9f0f8881fc807EAD975A"; // zora sepolia
+  : "0x6d28164C3CE04A190D5F9f0f8881fc807EAD975A"; // zora sepolia
 export const CHAIN_ID = isProd ? 8453 : 999999999; // 84532 for base mainnet, 999999999 for zora sepolia
 export let L1_PROVIDER = process.env.NEXT_PUBLIC_MAINNET_PROVIDER as string;
 export const ZORA_CONTRACT_ERC20_MINTER_ADDRESS =
