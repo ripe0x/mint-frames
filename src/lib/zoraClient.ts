@@ -14,6 +14,8 @@ export const getCollectorClient = (chain: string) => {
       chainId = 1;
     case "zora":
       chainId = 7777777;
+    case "oeth":
+      chainId = 10;
   }
   const publicClient = getPublicClient(chain);
 

@@ -1,7 +1,6 @@
 import { BASE_PROVIDER, L1_PROVIDER } from "@/constants";
-import { createPublicClient, createWalletClient, http, custom } from "viem";
-import { privateKeyToAccount } from "viem/accounts";
-import { base, mainnet, zora, baseSepolia } from "viem/chains";
+import { createPublicClient, http } from "viem";
+import { base, mainnet, zora, baseSepolia, optimism } from "viem/chains";
 
 export const publicClient = createPublicClient({
   chain: process.env.NEXT_PUBLIC_IS_PROD ? base : baseSepolia, // TODO: swap for baseSepolia when zora testnet site supports it again
@@ -23,9 +22,12 @@ export const getPublicClient = (chain: string) => {
     case "zora":
       chainObj = zora;
       chainLabel = "zora";
+    case "oeth":
+      chainObj = optimism;
+      chainLabel = "opt";
   }
   const publicClient = createPublicClient({
-    chain: chainObj, // TODO: swap for baseSepolia when zora testnet site supports it again
+    chain: chainObj,
     transport: http(
       `https://${chainLabel}-mainnet.g.alchemy.com/v2/${process.env.NEXT_PUBLIC_PROVIDER_API_KEY}`
     ),
