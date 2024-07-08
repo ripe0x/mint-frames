@@ -1,10 +1,11 @@
 "use client";
 import { zoraERC1155Abi } from "@/abi/zoraERC1155Abi";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useReadContract } from "wagmi";
 import MintZora1155 from "./MintZora1155";
 import { chainIdFromChainLabel } from "@/lib/chainIdFromChainLabel";
 import { getTokenCreatorOwnerDisplayName } from "@/lib/getTokenCreatorOwnerDisplayName";
+import { useRouter } from "next/navigation";
 
 type Props = {
   contractAddress: `0x${string}`;
@@ -53,9 +54,36 @@ const Zora1155TokenDetails = (props: Props) => {
     if (tokenUriUrl) fetchMetadata(tokenUriUrl);
   }, [result.data]);
 
+  const [redirectSeconds, setRedirectSeconds] = useState<number>(2);
+  const router = useRouter();
+  const redirectUrl = `https://zora.co/collect/${props.chain}:${props.contractAddress}/${props.tokenId}`;
+  useEffect(() => {
+    if (redirectSeconds == 0) {
+      router.push(redirectUrl);
+      return;
+    }
+
+    setTimeout(() => {
+      console.log(redirectSeconds);
+      setRedirectSeconds((redirectSeconds) => redirectSeconds - 1);
+    }, 1000);
+  }, [redirectSeconds]);
+
   return (
-    <div className="bg-black flex flex-col gap-10 p-4 justify-center xl:items-center xl:flex-row text-center xl:text-left ">
-      <div className="xl:w-1/2">
+    // <div className="bg-black flex flex-col gap-10 p-4 justify-center xl:items-center xl:flex-row text-center xl:text-left ">
+    <div className="bg-black flex flex-col gap-2 p-4 justify-center text-center h-full w-full items-center mt-10">
+      <div className="h-full w-full">
+        <p className="text-center mb-2">
+          Redirecting you to zora.co to mint {tokenName}
+        </p>
+
+        <p>
+          <a href={redirectUrl} className="underline text-bold">
+            {redirectUrl}
+          </a>
+        </p>
+      </div>
+      {/* <div className="xl:w-1/2">
         {tokenArtUrl && (
           <img
             src={tokenArtUrl}
@@ -76,7 +104,7 @@ const Zora1155TokenDetails = (props: Props) => {
             mintQuantity={1}
           />
         </div>
-      </div>
+      </div> */}
     </div>
   );
 };

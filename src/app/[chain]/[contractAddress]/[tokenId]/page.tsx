@@ -2,7 +2,8 @@ import { zoraERC1155Abi } from "@/abi/zoraERC1155Abi";
 import MintZora1155 from "@/app/components/onPage/MintZora1155";
 import Zora1155TokenDetails from "@/app/components/onPage/Zora1155TokenDetails";
 import { fetchMetadata } from "frames.js/next";
-import React, { useEffect } from "react";
+import { useRouter } from "next/navigation";
+import React, { useEffect, useState } from "react";
 import { useReadContract } from "wagmi";
 
 type Props = {

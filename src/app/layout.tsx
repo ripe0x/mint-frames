@@ -24,7 +24,7 @@ export default function RootLayout({
     <html lang="en">
       <body className={inter.className}>
         <Providers cookie={cookie}>
-          <GlobalHeader />
+          {/* <GlobalHeader /> */}
           {children}
         </Providers>
       </body>
