@@ -7,7 +7,6 @@ export const getTokenCreatorOwnerDisplayName = async (
   chain: string
 ) => {
   const contractOwner = await getContractOwner(contractAddress, chain);
-  console.log("contractOwner", contractOwner);
 
   const creatorEnsName = await getL1EnsName(contractOwner as `0x${string}`);
   let creatorDisplayName = truncAddr(contractOwner as `0x${string}`, 4);

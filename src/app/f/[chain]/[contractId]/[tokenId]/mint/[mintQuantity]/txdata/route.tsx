@@ -8,7 +8,11 @@ import { frames } from "../../../../frames";
 import { transaction } from "frames.js/core";
 import { get1155MintDetails } from "@/lib/get1155MintDetails";
 import { zoraERC1155Abi } from "@/abi/zoraERC1155Abi";
-import { CHAIN_ID, ZORA_CONTRACT_FIXED_PRICE_SALE_STRATEGY } from "@/constants";
+import {
+  CHAIN_ID,
+  OP_ZORA_CONTRACT_FIXED_PRICE_SALE_STRATEGY,
+  ZORA_CONTRACT_FIXED_PRICE_SALE_STRATEGY,
+} from "@/constants";
 import { chainIdFromChainLabel } from "@/lib/chainIdFromChainLabel";
 
 export const POST = frames(async (ctx) => {
@@ -28,7 +32,9 @@ export const POST = frames(async (ctx) => {
     abi: zoraERC1155Abi,
     functionName: "mintWithRewards",
     args: [
-      ZORA_CONTRACT_FIXED_PRICE_SALE_STRATEGY,
+      chain === "oeth"
+        ? OP_ZORA_CONTRACT_FIXED_PRICE_SALE_STRATEGY
+        : ZORA_CONTRACT_FIXED_PRICE_SALE_STRATEGY,
       BigInt(tokenId),
       BigInt(mintQuantity),
       encodeAbiParameters(parseAbiParameters("address, string"), [
